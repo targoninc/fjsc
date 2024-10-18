@@ -1,5 +1,6 @@
 import {FJSC} from "../FJSC.js";
 import {signal} from "../f2.js";
+import {InputType} from "../Types.js";
 
 const options = [
     {
@@ -26,8 +27,12 @@ function example() {
     return FJSC.area({
         classes: ["flex-v", "gap"],
         children: [
+            FJSC.heading({
+                level: 1,
+                text: "Counter example"
+            }),
             FJSC.container({
-                classes: ["flex", "gap", "align-children"],
+                classes: ["flex", "gap", "align-children", "wrap"],
                 children: [
                     FJSC.text({
                         text: counter
@@ -42,7 +47,7 @@ function example() {
                         onchange: (value) => {
                             counter.value = value;
                         },
-                        type: "number",
+                        type: InputType.number,
                         value: counter,
                         placeholder: "Enter a number"
                     }),

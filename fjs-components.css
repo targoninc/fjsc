@@ -92,6 +92,10 @@
     align-items: center;
 }
 
+.wrap {
+    flex-wrap: wrap;
+}
+
 .fjsc {
     font-family: var(--fjsc-font), sans-serif;
     font-size: var(--fjsc-base-font-size);
@@ -112,7 +116,6 @@
     padding: var(--fjsc-container-padding-y) var(--fjsc-container-padding-x);
     border-radius: var(--fjsc-border-radius-medium);
     border: 1px solid var(--fjsc-container-border);
-    flex-wrap: wrap;
 }
 
 button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
@@ -194,4 +197,32 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
 .fjsc-search-select-input:focus-visible {
     outline: none;
     border-color: var(--fjsc-interactive-border-focused);
+}
+
+h1.fjsc, h2.fjsc, h3.fjsc, h4.fjsc, h5.fjsc, h6.fjsc {
+    margin: 0;
+}
+
+h1.fjsc {
+    font-size: 2em;
+}
+
+h2.fjsc {
+    font-size: 1.5em;
+}
+
+h3.fjsc {
+    font-size: 1.17em;
+}
+
+h4.fjsc {
+    font-size: 1em;
+}
+
+h5.fjsc {
+    font-size: 0.83em;
+}
+
+h6.fjsc {
+    font-size: 0.67em;
 }

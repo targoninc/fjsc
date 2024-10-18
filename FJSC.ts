@@ -2,9 +2,12 @@ import {computedSignal, create, ifjs, signal, signalMap} from "./f2.ts";
 import type {
     ButtonConfig,
     ContainerConfig,
+    HeadingConfig,
     IconConfig,
     InputConfig,
-    SearchableSelectConfig, SelectOptionConfig,
+    SearchableSelectConfig,
+    SelectOption,
+    SelectOptionConfig,
     TextConfig
 } from "./Types.ts";
 
@@ -56,6 +59,13 @@ export class FJSC {
 
     static text(config: TextConfig) {
         return create(config.tag ?? "span")
+            .classes("fjsc")
+            .text(config.text)
+            .build();
+    }
+
+    static heading(config: HeadingConfig) {
+        return create(`h${config.level ?? 1}`)
             .classes("fjsc")
             .text(config.text)
             .build();

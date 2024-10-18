@@ -1,6 +1,12 @@
 import {DomNode, Signal} from "./f2.ts";
 import type {EventHandler, HtmlPropertyValue} from "./f2.ts";
 
+type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
+    ? Acc[number]
+    : Enumerate<N, [...Acc, Acc['length']]>
+
+type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>
+
 export enum InputType {
     button = "button",
     checkbox = "checkbox",
@@ -77,4 +83,9 @@ export interface SelectOptionConfig {
 export interface SearchableSelectConfig {
     options: Signal<SelectOption[]>;
     value: Signal<any>;
+}
+
+export interface HeadingConfig {
+    level?: IntRange<1, 6>;
+    text: string;
 }
