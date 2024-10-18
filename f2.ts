@@ -1,7 +1,7 @@
 type StringOrSignal = string | Signal<string>;
 type TypeOrSignal<T> = T | Signal<T>;
 type HtmlPropertyValue = TypeOrSignal<string | number | boolean>;
-type EventHandler = (this: GlobalEventHandlers, ev: MouseEvent|Event|string) => any;
+type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
 
 export function create(tag: string) {
     return new DomNode(tag);
@@ -409,302 +409,302 @@ export class DomNode {
         return this.prefixedAttribute('data', key, value);
     }
 
-    onclick(callback: EventHandler) {
+    onclick(callback: EventHandler<MouseEvent>) {
         this._node.onclick = callback;
         return this;
     }
 
-    onauxclick(callback: EventHandler) {
+    onauxclick(callback: EventHandler<MouseEvent>) {
         this._node.onauxclick = callback;
         return this;
     }
 
-    ondblclick(callback: EventHandler) {
+    ondblclick(callback: EventHandler<MouseEvent>) {
         this._node.ondblclick = callback;
         return this;
     }
 
-    onchange(callback: EventHandler) {
+    onchange(callback: EventHandler<Event>) {
         this._node.onchange = callback;
         return this;
     }
 
-    oninput(callback: EventHandler) {
+    oninput(callback: EventHandler<Event>) {
         this._node.oninput = callback;
         return this;
     }
 
-    onkeydown(callback: EventHandler) {
+    onkeydown(callback: EventHandler<Event>) {
         this._node.onkeydown = callback;
         return this;
     }
 
-    onkeyup(callback: EventHandler) {
+    onkeyup(callback: EventHandler<Event>) {
         this._node.onkeyup = callback;
         return this;
     }
 
-    onmousedown(callback: EventHandler) {
+    onmousedown(callback: EventHandler<MouseEvent>) {
         this._node.onmousedown = callback;
         return this;
     }
 
-    onmouseup(callback: EventHandler) {
+    onmouseup(callback: EventHandler<MouseEvent>) {
         this._node.onmouseup = callback;
         return this;
     }
 
-    onmouseover(callback: EventHandler) {
+    onmouseover(callback: EventHandler<MouseEvent>) {
         this._node.onmouseover = callback;
         return this;
     }
 
-    onmouseout(callback: EventHandler) {
+    onmouseout(callback: EventHandler<MouseEvent>) {
         this._node.onmouseout = callback;
         return this;
     }
 
-    onmousemove(callback: EventHandler) {
+    onmousemove(callback: EventHandler<MouseEvent>) {
         this._node.onmousemove = callback;
         return this;
     }
 
-    onmouseenter(callback: EventHandler) {
+    onmouseenter(callback: EventHandler<MouseEvent>) {
         this._node.onmouseenter = callback;
         return this;
     }
 
-    onmouseleave(callback: EventHandler) {
+    onmouseleave(callback: EventHandler<MouseEvent>) {
         this._node.onmouseleave = callback;
         return this;
     }
 
-    oncontextmenu(callback: EventHandler) {
+    oncontextmenu(callback: EventHandler<MouseEvent>) {
         this._node.oncontextmenu = callback;
         return this;
     }
 
-    onwheel(callback: EventHandler) {
+    onwheel(callback: EventHandler<MouseEvent>) {
         this._node.onwheel = callback;
         return this;
     }
 
-    ondrag(callback: EventHandler) {
+    ondrag(callback: EventHandler<MouseEvent>) {
         this._node.ondrag = callback;
         return this;
     }
 
-    ondragend(callback: EventHandler) {
+    ondragend(callback: EventHandler<MouseEvent>) {
         this._node.ondragend = callback;
         return this;
     }
 
-    ondragenter(callback: EventHandler) {
+    ondragenter(callback: EventHandler<MouseEvent>) {
         this._node.ondragenter = callback;
         return this;
     }
 
-    ondragstart(callback: EventHandler) {
+    ondragstart(callback: EventHandler<MouseEvent>) {
         this._node.ondragstart = callback;
         return this;
     }
 
-    ondragleave(callback: EventHandler) {
+    ondragleave(callback: EventHandler<MouseEvent>) {
         this._node.ondragleave = callback;
         return this;
     }
 
-    ondragover(callback: EventHandler) {
+    ondragover(callback: EventHandler<MouseEvent>) {
         this._node.ondragover = callback;
         return this;
     }
 
-    ondrop(callback: EventHandler) {
+    ondrop(callback: EventHandler<MouseEvent>) {
         this._node.ondrop = callback;
         return this;
     }
 
-    onscroll(callback: EventHandler) {
+    onscroll(callback: EventHandler<Event>) {
         this._node.onscroll = callback;
         return this;
     }
 
-    onfocus(callback: EventHandler) {
+    onfocus(callback: EventHandler<Event>) {
         this._node.onfocus = callback;
         return this;
     }
 
-    onblur(callback: EventHandler) {
+    onblur(callback: EventHandler<Event>) {
         this._node.onblur = callback;
         return this;
     }
 
-    onresize(callback: EventHandler) {
+    onresize(callback: EventHandler<Event>) {
         this._node.onresize = callback;
         return this;
     }
 
-    onselect(callback: EventHandler) {
+    onselect(callback: EventHandler<Event>) {
         this._node.onselect = callback;
         return this;
     }
 
-    onsubmit(callback: EventHandler) {
+    onsubmit(callback: EventHandler<Event>) {
         this._node.onsubmit = callback;
         return this;
     }
 
-    onreset(callback: EventHandler) {
+    onreset(callback: EventHandler<Event>) {
         this._node.onreset = callback;
         return this;
     }
 
-    onabort(callback: EventHandler) {
+    onabort(callback: EventHandler<Event>) {
         this._node.onabort = callback;
         return this;
     }
 
-    onerror(callback: EventHandler) {
+    onerror(callback: EventHandler<string|Event>) {
         this._node.onerror = callback;
         return this;
     }
 
-    oncanplay(callback: EventHandler) {
+    oncanplay(callback: EventHandler<Event>) {
         this._node.oncanplay = callback;
         return this;
     }
 
-    oncanplaythrough(callback: EventHandler) {
+    oncanplaythrough(callback: EventHandler<Event>) {
         this._node.oncanplaythrough = callback;
         return this;
     }
 
-    ondurationchange(callback: EventHandler) {
+    ondurationchange(callback: EventHandler<Event>) {
         this._node.ondurationchange = callback;
         return this;
     }
 
-    onemptied(callback: EventHandler) {
+    onemptied(callback: EventHandler<Event>) {
         this._node.onemptied = callback;
         return this;
     }
 
-    onended(callback: EventHandler) {
+    onended(callback: EventHandler<Event>) {
         this._node.onended = callback;
         return this;
     }
 
-    onloadeddata(callback: EventHandler) {
+    onloadeddata(callback: EventHandler<Event>) {
         this._node.onloadeddata = callback;
         return this;
     }
 
-    onloadedmetadata(callback: EventHandler) {
+    onloadedmetadata(callback: EventHandler<Event>) {
         this._node.onloadedmetadata = callback;
         return this;
     }
 
-    onloadstart(callback: EventHandler) {
+    onloadstart(callback: EventHandler<Event>) {
         this._node.onloadstart = callback;
         return this;
     }
 
-    onpause(callback: EventHandler) {
+    onpause(callback: EventHandler<Event>) {
         this._node.onpause = callback;
         return this;
     }
 
-    onplay(callback: EventHandler) {
+    onplay(callback: EventHandler<Event>) {
         this._node.onplay = callback;
         return this;
     }
 
-    onplaying(callback: EventHandler) {
+    onplaying(callback: EventHandler<Event>) {
         this._node.onplaying = callback;
         return this;
     }
 
-    onprogress(callback: EventHandler) {
+    onprogress(callback: EventHandler<Event>) {
         this._node.onprogress = callback;
         return this;
     }
 
-    onratechange(callback: EventHandler) {
+    onratechange(callback: EventHandler<Event>) {
         this._node.onratechange = callback;
         return this;
     }
 
-    onseeked(callback: EventHandler) {
+    onseeked(callback: EventHandler<Event>) {
         this._node.onseeked = callback;
         return this;
     }
 
-    onseeking(callback: EventHandler) {
+    onseeking(callback: EventHandler<Event>) {
         this._node.onseeking = callback;
         return this;
     }
 
-    onstalled(callback: EventHandler) {
+    onstalled(callback: EventHandler<Event>) {
         this._node.onstalled = callback;
         return this;
     }
 
-    onsuspend(callback: EventHandler) {
+    onsuspend(callback: EventHandler<Event>) {
         this._node.onsuspend = callback;
         return this;
     }
 
-    ontimeupdate(callback: EventHandler) {
+    ontimeupdate(callback: EventHandler<Event>) {
         this._node.ontimeupdate = callback;
         return this;
     }
 
-    onvolumechange(callback: EventHandler) {
+    onvolumechange(callback: EventHandler<Event>) {
         this._node.onvolumechange = callback;
         return this;
     }
 
-    onwaiting(callback: EventHandler) {
+    onwaiting(callback: EventHandler<Event>) {
         this._node.onwaiting = callback;
         return this;
     }
 
-    oncopy(callback: EventHandler) {
+    oncopy(callback: EventHandler<Event>) {
         this._node.oncopy = callback;
         return this;
     }
 
-    oncut(callback: EventHandler) {
+    oncut(callback: EventHandler<Event>) {
         this._node.oncut = callback;
         return this;
     }
 
-    onpaste(callback: EventHandler) {
+    onpaste(callback: EventHandler<Event>) {
         this._node.onpaste = callback;
         return this;
     }
 
-    onanimationstart(callback: EventHandler) {
+    onanimationstart(callback: EventHandler<Event>) {
         this._node.onanimationstart = callback;
         return this;
     }
 
-    onanimationend(callback: EventHandler) {
+    onanimationend(callback: EventHandler<Event>) {
         this._node.onanimationend = callback;
         return this;
     }
 
-    onanimationiteration(callback: EventHandler) {
+    onanimationiteration(callback: EventHandler<Event>) {
         this._node.onanimationiteration = callback;
         return this;
     }
 
-    ontransitionend(callback: EventHandler) {
+    ontransitionend(callback: EventHandler<Event>) {
         this._node.ontransitionend = callback;
         return this;
     }
 
-    on(eventName: string, callback: EventHandler) {
+    on(eventName: string, callback: EventHandler<Event>) {
         this._node.addEventListener(eventName, callback);
         return this;
     }
@@ -742,11 +742,14 @@ export class DomNode {
                     throw new Error('Invalid key type for styles. Must be a string.');
                 }
                 if (value && value.constructor === Signal) {
+                    // @ts-ignore
                     this._node.style[key] = value.value;
                     value.onUpdate = (newValue: any) => {
+                        // @ts-ignore
                         this._node.style[key] = newValue;
                     };
                 } else {
+                    // @ts-ignore
                     this._node.style[key] = value;
                 }
             }
