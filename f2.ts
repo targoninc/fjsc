@@ -1,6 +1,6 @@
 export type StringOrSignal = string | Signal<string>;
 export type TypeOrSignal<T> = T | Signal<T>;
-export type HtmlPropertyValue = TypeOrSignal<string | number | boolean>;
+export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
 
 export function create(tag: string) {
