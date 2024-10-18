@@ -3,6 +3,7 @@
   "module": "FJSC.ts",
   "type": "module",
   "scripts": {
+    "minify": "bun build ./FJSC.ts --sourcemap=linked",
     "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"  },
   "devDependencies": {
     "@types/bun": "latest"
