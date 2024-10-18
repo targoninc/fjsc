@@ -1,7 +1,7 @@
-type StringOrSignal = string | Signal<string>;
-type TypeOrSignal<T> = T | Signal<T>;
-type HtmlPropertyValue = TypeOrSignal<string | number | boolean>;
-type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
+export type StringOrSignal = string | Signal<string>;
+export type TypeOrSignal<T> = T | Signal<T>;
+export type HtmlPropertyValue = TypeOrSignal<string | number | boolean>;
+export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
 
 export function create(tag: string) {
     return new DomNode(tag);
