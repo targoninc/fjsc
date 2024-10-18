@@ -1,0 +1,14 @@
+{
+  "name": "fjs-components",
+  "module": "FJSC.ts",
+  "type": "module",
+  "scripts": {
+    "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
