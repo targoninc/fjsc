@@ -58,7 +58,7 @@ export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback
  * @param sourceSignal {Signal} Whenever the source signal is updated, the updateMethod gets called to update the output signal.
  * @param updateMethod {Function} Should return the value to update the output signal with.
  */
-export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function) {
+export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function): Signal<T> {
     const returnSignal = signal<T>(updateMethod(sourceSignal.value));
     sourceSignal.subscribe((newVal: (T)) => {
         try {

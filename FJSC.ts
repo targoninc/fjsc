@@ -1,57 +1,12 @@
-import {computedSignal, create, DomNode, ifjs, signal, Signal, signalMap} from "./f2.ts";
-
-export interface ButtonConfig {
-    classes: string[];
-    text: string;
-    onclick?: () => void;
-}
-
-export interface InputConfig {
-    name: string;
-    accept: string;
-    type: "text" | "password" | "number" | "checkbox";
-    classes: string[];
-    placeholder: string;
-    value: string;
-    onchange?: (value: string) => void;
-}
-
-export interface ContainerConfig {
-    tag: string;
-    children: (DomNode|HTMLElement|SVGElement)[];
-    classes: (string|Signal<string>)[];
-}
-
-export interface TextConfig {
-    text: string|Signal<string>,
-    tag: string
-}
-
-export interface IconConfig {
-    icon: string|Signal<string>;
-    adaptive?: boolean;
-    isUrl?: boolean;
-}
-
-export interface SelectOption {
-    image: string;
-    imageIsUrl: boolean;
-    name: any;
-    id: any;
-}
-
-export interface SelectOptionConfig {
-    option: SelectOption;
-    value: Signal<any>;
-    search: Signal<string>;
-    optionsVisible: Signal<boolean>;
-    selectedId: Signal<any>;
-}
-
-export interface SearchableSelectConfig {
-    options: Signal<SelectOption[]>;
-    value: Signal<any>;
-}
+import {computedSignal, create, ifjs, signal, signalMap} from "./f2.ts";
+import type {
+    ButtonConfig,
+    ContainerConfig,
+    IconConfig,
+    InputConfig,
+    SearchableSelectConfig, SelectOptionConfig,
+    TextConfig
+} from "./Types.ts";
 
 export class FJSC {
     static button(config: ButtonConfig) {
@@ -200,10 +155,10 @@ export class FJSC {
                                 optionsVisible.value = !optionsVisible.value;
                             })
                             .children(
-                                FJSC.icon({
+                                FJSC.icon(<IconConfig>{
                                     icon: currentIcon,
+                                    adaptive: true,
                                     isUrl: false,
-                                    adaptive: true
                                 })
                             ).build()
                     ).build(),
@@ -214,7 +169,7 @@ export class FJSC {
 
     static searchSelectOption(config: SelectOptionConfig) {
         let element: any;
-        const selectedClass = computedSignal(config.selectedId, (id: string) => {
+        const selectedClass = computedSignal<string>(config.selectedId, (id: string) => {
             element?.scrollIntoView({ behavior: "smooth", block: "nearest" });
             return id === config.option.id ? "selected" : "_";
         });
