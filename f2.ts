@@ -59,9 +59,9 @@ export function signalMap(arrayState, wrapper, callback) {
  * @param sourceSignal {Signal} Whenever the source signal is updated, the updateMethod gets called to update the output signal.
  * @param updateMethod {Function} Should return the value to update the output signal with.
  */
-export function computedSignal(sourceSignal, updateMethod) {
-    const returnSignal = signal(updateMethod(sourceSignal.value));
-    sourceSignal.subscribe((newVal) => {
+export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function) {
+    const returnSignal = signal<T|null>(updateMethod(sourceSignal.value));
+    sourceSignal.subscribe((newVal: (T|null)) => {
         try {
             returnSignal.value = updateMethod(newVal);
         } catch (e) {
@@ -71,8 +71,8 @@ export function computedSignal(sourceSignal, updateMethod) {
     return returnSignal;
 }
 
-export function signalFromProperty(sourceSignal, propertyName) {
-    return computedSignal(sourceSignal, (source) => {
+export function signalFromProperty(sourceSignal: Signal<any>, propertyName: string) {
+    return computedSignal(sourceSignal, (source: any) => {
         if (!source) {
             return null;
         }
@@ -80,12 +80,12 @@ export function signalFromProperty(sourceSignal, propertyName) {
     });
 }
 
-export function stack(message, debugInfo = {}) {
+export function stack(message: string, debugInfo = {}) {
     console.warn(message, { debugInfo }, (new Error()).stack);
 }
 
 export class TypeHelper {
-    static assertString(value, valueName = 'value') {
+    static assertString(value: any, valueName = 'value') {
         const result = value.constructor === String;
         if (!result) {
             console.log('TypeHelper.isString: value is not a string for ' + valueName + ': ', value);
@@ -93,7 +93,7 @@ export class TypeHelper {
         return result;
     }
 
-    static assertFunction(value, valueName = 'value') {
+    static assertFunction(value: any, valueName = 'value') {
         const result = value.constructor === Function;
         if (!result) {
             console.log('TypeHelper.isFunction: value is not a function for ' + valueName + ': ', value);
