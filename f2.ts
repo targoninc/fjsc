@@ -319,7 +319,7 @@ export class DomNode {
         return this;
     }
 
-    text(text: string) {
+    text(text: string|Signal<string>) {
         this.wrapProperty('innerText', text);
         return this;
     }
