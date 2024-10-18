@@ -15,7 +15,7 @@ export function nullElement() {
     return create("div").styles("display", "none").build();
 }
 
-export function ifjs(condition: TypeOrSignal<boolean>, element: HTMLElement|SVGElement, inverted = false) {
+export function ifjs(condition: any, element: HTMLElement|SVGElement, inverted = false) {
     if (condition && condition.constructor === Signal) {
         const state = signal(condition.value ? (inverted ? nullElement() : element) : (inverted ? element : nullElement()));
         condition.subscribe((newValue: any) => {
