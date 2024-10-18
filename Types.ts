@@ -1,5 +1,5 @@
 import {DomNode, Signal} from "./f2.ts";
-import type {EventHandler} from "./f2.ts";
+import type {EventHandler, HtmlPropertyValue} from "./f2.ts";
 
 export enum InputType {
     button = "button",
@@ -49,7 +49,7 @@ export interface ContainerConfig {
 }
 
 export interface TextConfig {
-    text: string|Signal<string>,
+    text: HtmlPropertyValue,
     tag: string
 }
 

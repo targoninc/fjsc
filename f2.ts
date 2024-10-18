@@ -267,13 +267,13 @@ export class DomNode {
     }
 
     wrapProperty(property: string, value: HtmlPropertyValue) {
-        if (value && value.constructor === Signal) {
+        if (value && value.subscribe) {
             // @ts-ignore
             this._node[property] = value.value;
-            value.onUpdate = (newValue: HtmlPropertyValue) => {
+            value.subscribe((newValue: HtmlPropertyValue) => {
                 // @ts-ignore
                 this._node[property] = newValue;
-            };
+            });
         } else {
             // @ts-ignore
             this._node[property] = value;

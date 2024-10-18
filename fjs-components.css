@@ -112,6 +112,7 @@
     padding: var(--fjsc-container-padding-y) var(--fjsc-container-padding-x);
     border-radius: var(--fjsc-border-radius-medium);
     border: 1px solid var(--fjsc-container-border);
+    flex-wrap: wrap;
 }
 
 button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
