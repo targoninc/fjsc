@@ -60,11 +60,12 @@ export function signalMap(arrayState, wrapper, callback) {
  * @param updateMethod {Function} Should return the value to update the output signal with.
  */
 export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function) {
-    const returnSignal = signal<T|null>(updateMethod(sourceSignal.value));
-    sourceSignal.subscribe((newVal: (T|null)) => {
+    const returnSignal = signal<T>(updateMethod(sourceSignal.value));
+    sourceSignal.subscribe((newVal: (T)) => {
         try {
             returnSignal.value = updateMethod(newVal);
         } catch (e) {
+            // @ts-ignore
             returnSignal.value = null;
         }
     });
