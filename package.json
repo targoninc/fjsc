@@ -1,7 +1,8 @@
 {
-  "name": "fjs-components",
+  "name": "fjsc",
   "module": "FJSC.ts",
   "type": "module",
+  "main": "FJSC.ts",
   "scripts": {
     "minify": "bun build ./FJSC.ts --sourcemap=linked --minify",
     "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"  },
