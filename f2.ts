@@ -279,7 +279,7 @@ export class DomNode {
             .aria(config.aria);
     }
 
-    build() {
+    build(): AnyElement {
         if (!isValidElement(this._node)) {
             throw new Error('Invalid node type. Must be an HTMLElement or a subclass.');
         }
