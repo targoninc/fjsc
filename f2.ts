@@ -4,6 +4,7 @@ export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
+export type AnyElementFactory = () => AnyNode;
 
 export function create(tag: string) {
     return new DomNode(tag);
@@ -17,19 +18,26 @@ export function nullElement() {
     return create("div").styles("display", "none").build();
 }
 
-export function ifjs(condition: any, element: AnyElement, inverted = false) {
+export function ifjs(condition: any, element: AnyElement | AnyElementFactory, inverted = false) {
+    const getElement = () => {
+        if (element.constructor === Function) {
+            return element();
+        }
+        return elemen;
+    }
+
     if (condition && condition.constructor === Signal) {
-        const state = signal(condition.value ? (inverted ? nullElement() : element) : (inverted ? element : nullElement()));
+        const state = signal(condition.value ? (inverted ? nullElement() : getElement()) : (inverted ? getElement() : nullElement()));
         condition.subscribe((newValue: any) => {
             if (newValue) {
-                state.value = inverted ? nullElement() : element;
+                state.value = inverted ? nullElement() : getElement();
             } else {
-                state.value = inverted ? element : nullElement();
+                state.value = inverted ? getElement() : nullElement();
             }
         });
         return state;
     } else {
-        return condition ? (inverted ? nullElement() : element) : (inverted ? element : nullElement());
+        return condition ? (inverted ? nullElement() : getElement()) : (inverted ? getElement() : nullElement());
     }
 }
 
