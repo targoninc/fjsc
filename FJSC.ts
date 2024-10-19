@@ -19,8 +19,8 @@ export class FJSC {
             .applyGenericConfig(config)
             .onclick(config.onclick)
             .children(
-                ifjs(config.icon, FJSC.icon(config.icon)),
-                ifjs(config.text, FJSC.text({
+                ifjs(config.icon, () => FJSC.icon(config.icon)),
+                ifjs(config.text, () => FJSC.text({
                     text: config.text,
                 }))
             ).build();
