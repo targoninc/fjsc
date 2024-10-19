@@ -23,7 +23,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
         if (element.constructor === Function) {
             return element();
         }
-        return elemen;
+        return element;
     }
 
     if (condition && condition.constructor === Signal) {
