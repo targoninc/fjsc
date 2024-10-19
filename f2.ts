@@ -19,11 +19,11 @@ export function nullElement() {
 }
 
 export function ifjs(condition: any, element: AnyElement | AnyElementFactory, inverted = false) {
-    const getElement = () => {
+    function getElement(): AnyElement {
         if (element.constructor === Function) {
             return (<AnyElementFactory>element)();
         }
-        return element;
+        return <AnyElement>element;
     }
 
     if (condition && condition.constructor === Signal) {
