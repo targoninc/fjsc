@@ -124,6 +124,7 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     border: 1px solid var(--fjsc-interactive-border);
     background: var(--fjsc-interactive-background);
     color: var(--fjsc-interactive-color);
+    height: initial !important;
 }
 
 button.fjsc:hover {
@@ -183,7 +184,7 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
 }
 
 .fjsc-search-select-visible {
-    gap: 0;
+    gap: 0 !important;
     width: 100%;
 }
 
