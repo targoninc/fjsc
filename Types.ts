@@ -1,9 +1,9 @@
-import {DomNode, Signal, StringOrSignal, TypeOrSignal} from "./f2.ts";
-import type {EventHandler, HtmlPropertyValue} from "./f2.ts";
+import {DomNode, Signal} from "./f2.ts";
+import type {EventHandler, StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
 
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
     ? Acc[number]
-    : Enumerate<N>
+    : Enumerate<N, [...Acc, Acc['length']]>
 
 type IntRange<F extends number, T extends number> = Exclude<Enumerate<T>, Enumerate<F>>
 

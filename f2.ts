@@ -1,7 +1,7 @@
 export type StringOrSignal = string | Signal<string>;
 export type TypeOrSignal<T> = T | Signal<T>;
 export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
-export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
+export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Function;
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
 export type AnyElementFactory = () => AnyElement;
@@ -21,7 +21,7 @@ export function nullElement() {
 export function ifjs(condition: any, element: AnyElement | AnyElementFactory, inverted = false) {
     const getElement = () => {
         if (element.constructor === Function) {
-            return element();
+            return (<AnyElementFactory>element)();
         }
         return element;
     }
@@ -275,8 +275,7 @@ export class DomNode {
             .styles(...(config.styles ?? []))
             .id(config.id)
             .title(config.title)
-            .role(config.role)
-            .aria(config.aria);
+            .role(config.role);
     }
 
     build(): AnyElement {
@@ -287,9 +286,11 @@ export class DomNode {
     }
 
     wrapProperty(property: string, value: HtmlPropertyValue) {
+        // @ts-ignore
         if (value && value.subscribe) {
             // @ts-ignore
             this._node[property] = value.value;
+            // @ts-ignore
             value.subscribe((newValue: HtmlPropertyValue) => {
                 // @ts-ignore
                 this._node[property] = newValue;
@@ -430,301 +431,361 @@ export class DomNode {
     }
 
     onclick(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onclick = callback;
         return this;
     }
 
     onauxclick(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onauxclick = callback;
         return this;
     }
 
     ondblclick(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondblclick = callback;
         return this;
     }
 
     onchange(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onchange = callback;
         return this;
     }
 
     oninput(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.oninput = callback;
         return this;
     }
 
     onkeydown(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onkeydown = callback;
         return this;
     }
 
     onkeyup(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onkeyup = callback;
         return this;
     }
 
     onmousedown(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmousedown = callback;
         return this;
     }
 
     onmouseup(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmouseup = callback;
         return this;
     }
 
     onmouseover(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmouseover = callback;
         return this;
     }
 
     onmouseout(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmouseout = callback;
         return this;
     }
 
     onmousemove(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmousemove = callback;
         return this;
     }
 
     onmouseenter(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmouseenter = callback;
         return this;
     }
 
     onmouseleave(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onmouseleave = callback;
         return this;
     }
 
     oncontextmenu(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.oncontextmenu = callback;
         return this;
     }
 
     onwheel(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.onwheel = callback;
         return this;
     }
 
     ondrag(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondrag = callback;
         return this;
     }
 
     ondragend(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondragend = callback;
         return this;
     }
 
     ondragenter(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondragenter = callback;
         return this;
     }
 
     ondragstart(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondragstart = callback;
         return this;
     }
 
     ondragleave(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondragleave = callback;
         return this;
     }
 
     ondragover(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondragover = callback;
         return this;
     }
 
     ondrop(callback: EventHandler<MouseEvent>) {
+        // @ts-ignore
         this._node.ondrop = callback;
         return this;
     }
 
     onscroll(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onscroll = callback;
         return this;
     }
 
     onfocus(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onfocus = callback;
         return this;
     }
 
     onblur(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onblur = callback;
         return this;
     }
 
     onresize(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onresize = callback;
         return this;
     }
 
     onselect(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onselect = callback;
         return this;
     }
 
     onsubmit(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onsubmit = callback;
         return this;
     }
 
     onreset(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onreset = callback;
         return this;
     }
 
     onabort(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onabort = callback;
         return this;
     }
 
     onerror(callback: EventHandler<string|Event>) {
+        // @ts-ignore
         this._node.onerror = callback;
         return this;
     }
 
     oncanplay(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.oncanplay = callback;
         return this;
     }
 
     oncanplaythrough(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.oncanplaythrough = callback;
         return this;
     }
 
     ondurationchange(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.ondurationchange = callback;
         return this;
     }
 
     onemptied(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onemptied = callback;
         return this;
     }
 
     onended(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onended = callback;
         return this;
     }
 
     onloadeddata(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onloadeddata = callback;
         return this;
     }
 
     onloadedmetadata(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onloadedmetadata = callback;
         return this;
     }
 
     onloadstart(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onloadstart = callback;
         return this;
     }
 
     onpause(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onpause = callback;
         return this;
     }
 
     onplay(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onplay = callback;
         return this;
     }
 
     onplaying(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onplaying = callback;
         return this;
     }
 
     onprogress(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onprogress = callback;
         return this;
     }
 
     onratechange(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onratechange = callback;
         return this;
     }
 
     onseeked(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onseeked = callback;
         return this;
     }
 
     onseeking(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onseeking = callback;
         return this;
     }
 
     onstalled(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onstalled = callback;
         return this;
     }
 
     onsuspend(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onsuspend = callback;
         return this;
     }
 
     ontimeupdate(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.ontimeupdate = callback;
         return this;
     }
 
     onvolumechange(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onvolumechange = callback;
         return this;
     }
 
     onwaiting(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onwaiting = callback;
         return this;
     }
 
     oncopy(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.oncopy = callback;
         return this;
     }
 
     oncut(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.oncut = callback;
         return this;
     }
 
     onpaste(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onpaste = callback;
         return this;
     }
 
     onanimationstart(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onanimationstart = callback;
         return this;
     }
 
     onanimationend(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onanimationend = callback;
         return this;
     }
 
     onanimationiteration(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.onanimationiteration = callback;
         return this;
     }
 
     ontransitionend(callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.ontransitionend = callback;
         return this;
     }
 
     on(eventName: string, callback: EventHandler<Event>) {
+        // @ts-ignore
         this._node.addEventListener(eventName, callback);
         return this;
     }
