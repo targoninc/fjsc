@@ -2,6 +2,8 @@ export type StringOrSignal = string | Signal<string>;
 export type TypeOrSignal<T> = T | Signal<T>;
 export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
+export type AnyElement = HTMLElement | SVGElement;
+export type AnyNode = DomNode | AnyElement;
 
 export function create(tag: string) {
     return new DomNode(tag);
@@ -15,7 +17,7 @@ export function nullElement() {
     return create("div").styles("display", "none").build();
 }
 
-export function ifjs(condition: any, element: HTMLElement|SVGElement, inverted = false) {
+export function ifjs(condition: any, element: AnyElement, inverted = false) {
     if (condition && condition.constructor === Signal) {
         const state = signal(condition.value ? (inverted ? nullElement() : element) : (inverted ? element : nullElement()));
         condition.subscribe((newValue: any) => {
@@ -248,7 +250,7 @@ export function isValidElement(element: any) {
 }
 
 export class DomNode {
-    _node: HTMLElement|SVGElement;
+    _node: AnyElement;
     svgTags = ['svg', 'g', 'circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect', 'text', 'textPath', 'tspan'];
 
     constructor(tag: string) {
@@ -346,7 +348,7 @@ export class DomNode {
         return this;
     }
 
-    children(...children: TypeOrSignal<DomNode | HTMLElement | SVGElement>[]) {
+    children(...children: TypeOrSignal<AnyNode>[]) {
         for (let node of arguments) {
             if (isValidElement(node)) {
                 this._node.appendChild(node);
@@ -359,9 +361,9 @@ export class DomNode {
                     childNode = nullElement();
                 }
                 this._node.appendChild(childNode);
-                node.onUpdate = (newValue: DomNode|HTMLElement|SVGElement) => {
+                node.onUpdate = (newValue: AnyNode) => {
                     if (isValidElement(newValue)) {
-                        this._node.replaceChild(newValue as HTMLElement, childNode);
+                        this._node.replaceChild(newValue as AnyElement, childNode);
                         childNode = newValue;
                     } else if (newValue.constructor === DomNode) {
                         this._node.replaceChild(newValue.build(), childNode);
