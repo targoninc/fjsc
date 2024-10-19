@@ -367,7 +367,7 @@ export class DomNode {
         return this;
     }
 
-    children(...children: TypeOrSignal<AnyNode>[]) {
+    children(...children: (TypeOrSignal<AnyNode>|null)[]) {
         for (let node of arguments) {
             if (isValidElement(node)) {
                 this._node.appendChild(node);
