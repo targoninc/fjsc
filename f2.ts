@@ -4,7 +4,7 @@ export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = (this: GlobalEventHandlers, ev: T) => any;
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
-export type AnyElementFactory = () => AnyNode;
+export type AnyElementFactory = () => AnyElement;
 
 export function create(tag: string) {
     return new DomNode(tag);
