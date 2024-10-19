@@ -103,7 +103,7 @@ export class FJSC {
         options.subscribe(filter);
         search.subscribe(filter);
         filter();
-        const selectedId = signal(options.value[0].id);
+        const selectedId = signal(options.value[0]?.id ?? null);
         const updateSelectedId = () => {
             selectedId.value = filtered.value[selectedIndex.value]?.id;
         }
