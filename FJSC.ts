@@ -17,9 +17,13 @@ export class FJSC {
         config.classes ??= [];
         return create("button")
             .applyGenericConfig(config)
-            .text(config.text)
             .onclick(config.onclick)
-            .build();
+            .children(
+                ifjs(config.icon, FJSC.icon(config.icon)),
+                ifjs(config.text, FJSC.text({
+                    text: config.text,
+                }))
+            ).build();
     }
 
     static input(config: InputConfig) {
