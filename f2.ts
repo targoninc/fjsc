@@ -261,6 +261,17 @@ export class DomNode {
         }
     }
 
+    applyGenericConfig(config: any) {
+        return this.classes("fjsc", ...(config.classes ?? []))
+            .attributes(...(config.attributes ?? []))
+            .styles(...(config.styles ?? []))
+            .style(config.style)
+            .id(config.id)
+            .title(config.title)
+            .role(config.role)
+            .aria(config.aria);
+    }
+
     build() {
         if (!isValidElement(this._node)) {
             throw new Error('Invalid node type. Must be an HTMLElement or a subclass.');

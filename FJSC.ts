@@ -1,5 +1,6 @@
-import {computedSignal, create, ifjs, signal, signalMap} from "./f2.ts";
+import {computedSignal, create, DomNode, ifjs, signal, signalMap} from "./f2.ts";
 import type {
+    BaseComponentConfig,
     ButtonConfig,
     ContainerConfig,
     HeadingConfig,
@@ -15,7 +16,7 @@ export class FJSC {
     static button(config: ButtonConfig) {
         config.classes ??= [];
         return create("button")
-            .classes("fjsc", ...config.classes)
+            .applyGenericConfig(config)
             .text(config.text)
             .onclick(config.onclick)
             .build();
@@ -23,7 +24,7 @@ export class FJSC {
 
     static input(config: InputConfig) {
         return create("input")
-            .classes("fjsc")
+            .applyGenericConfig(config)
             .type(config.type)
             .value(config.value)
             .accept(config.accept)
@@ -42,7 +43,8 @@ export class FJSC {
         config.children ??= [];
 
         return create(config.tag ?? "div")
-            .classes("fjsc", "fjsc-area", ...config.classes)
+            .applyGenericConfig(config)
+            .classes("fjsc-area")
             .children(...config.children)
             .build();
     }
@@ -52,21 +54,22 @@ export class FJSC {
         config.children ??= [];
 
         return create(config.tag ?? "div")
-            .classes("fjsc", "fjsc-container", ...config.classes)
+            .applyGenericConfig(config)
+            .classes("fjsc-container")
             .children(...config.children)
             .build();
     }
 
     static text(config: TextConfig) {
         return create(config.tag ?? "span")
-            .classes("fjsc")
+            .applyGenericConfig(config)
             .text(config.text)
             .build();
     }
 
     static heading(config: HeadingConfig) {
         return create(`h${config.level ?? 1}`)
-            .classes("fjsc")
+            .applyGenericConfig(config)
             .text(config.text)
             .build();
     }
@@ -78,13 +81,15 @@ export class FJSC {
 
         if (isMaterial) {
             return create("i")
-                .classes(iconClass, "fjsc", "material-symbols-outlined", "no-pointer")
+                .applyGenericConfig(config)
+                .classes(iconClass, "material-symbols-outlined", "no-pointer")
                 .text(icon)
                 .build();
         }
 
         return create("img")
-            .classes(iconClass, "fjsc", "no-pointer")
+            .applyGenericConfig(config)
+            .classes(iconClass, "no-pointer")
             .attributes("src", icon)
             .build();
     }
@@ -113,6 +118,7 @@ export class FJSC {
         const currentIcon = computedSignal(optionsVisible, (vis: boolean) => vis ? "arrow_drop_up" : "arrow_drop_down");
 
         return create("div")
+            .applyGenericConfig(config)
             .classes("fjsc-search-select", "flex-v", "relative")
             .children(
                 create("div")
