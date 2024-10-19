@@ -36,7 +36,6 @@ export interface BaseComponentConfig {
     classes?: StringOrSignal[];
     attributes?: StringOrSignal[];
     styles?: StringOrSignal[];
-    style?: StringOrSignal;
     id?: HtmlPropertyValue;
     title?: HtmlPropertyValue;
     tabindex?: HtmlPropertyValue;

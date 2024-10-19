@@ -265,7 +265,6 @@ export class DomNode {
         return this.classes("fjsc", ...(config.classes ?? []))
             .attributes(...(config.attributes ?? []))
             .styles(...(config.styles ?? []))
-            .style(config.style)
             .id(config.id)
             .title(config.title)
             .role(config.role)
