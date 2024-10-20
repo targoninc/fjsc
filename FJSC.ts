@@ -4,7 +4,7 @@ import type {
     TypeOrSignal,
 } from "./f2.ts";
 import {
-    ButtonConfig, CheckboxConfig,
+    ButtonConfig, BooleanConfig,
     ContainerConfig,
     HeadingConfig,
     IconConfig,
@@ -217,8 +217,9 @@ export class FJSC {
         return element;
     }
 
-    static checkbox(config: CheckboxConfig) {
+    static checkbox(config: BooleanConfig) {
         return create("label")
+            .applyGenericConfig(config)
             .classes("fjsc-checkbox-container")
             .text(config.text)
             .children(
@@ -238,6 +239,34 @@ export class FJSC {
                             .text("✓")
                             .build()
                     ).build(),
+            ).build();
+    }
+
+    static toggle(config: BooleanConfig) {
+        return create("label")
+            .applyGenericConfig(config)
+            .classes("flex", "gap", "align-children")
+            .for(config.name ?? "")
+            .children(
+                create("input")
+                    .type("checkbox")
+                    .classes("hidden", "fjsc-slider")
+                    .id(config.name ?? "")
+                    .required(config.required ?? false)
+                    .checked(config.checked)
+                    .onclick((e) => config.onchange((e.target as HTMLInputElement).checked))
+                    .build(),
+                create("div")
+                    .classes("fjsc-toggle-container")
+                    .children(
+                        create("span")
+                            .classes("fjsc-toggle-slider")
+                            .build()
+                    ).build(),
+                create("span")
+                    .classes("fjsc-toggle-text")
+                    .text(config.text ?? "")
+                    .build(),
             ).build();
     }
 }

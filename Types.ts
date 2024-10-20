@@ -99,7 +99,7 @@ export interface HeadingConfig extends BaseComponentConfig  {
     text: StringOrSignal;
 }
 
-export interface CheckboxConfig extends BaseComponentConfig {
+export interface BooleanConfig extends BaseComponentConfig {
     onchange: Function,
     text: HtmlPropertyValue,
     checked: TypeOrSignal<boolean>,

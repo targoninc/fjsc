@@ -62,6 +62,13 @@ function example() {
                         checked: true,
                         text: "Checkbox"
                     }),
+                    FJSC.toggle({
+                        onchange: (value) => {
+                            console.log("toggle changed to " + value);
+                        },
+                        checked: true,
+                        text: "Toggle"
+                    }),
                 ]
             }),
         ]

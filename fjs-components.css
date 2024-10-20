@@ -59,6 +59,10 @@
     pointer-events: none;
 }
 
+.hidden {
+    display: none;
+}
+
 .material-symbols-outlined {
     font-size: var(--fjsc-base-font-size) !important;
 }
@@ -231,7 +235,7 @@ h6.fjsc {
 .fjsc-checkbox-container {
     display: block;
     position: relative;
-    padding-left: 25px;
+    padding-left: calc(1em + var(--fjsc-gap));
     cursor: pointer;
     user-select: none;
 }
@@ -273,4 +277,33 @@ h6.fjsc {
 
 .fjsc-checkbox-container input:checked ~ .fjsc-checkmark .fjsc-checkmark-icon {
     display: initial;
+}
+
+.fjsc-toggle-container {
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
+    background: var(--fjsc-interactive-background-hover);
+    position: relative;
+    cursor: pointer;
+}
+
+.fjsc-toggle-slider {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--fjsc-interactive-background);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left .2s ease;
+    left: 2px;
+}
+
+input.fjsc-slider:checked ~ .fjsc-toggle-container {
+    background: var(--fjsc-interactive-color);
+}
+
+input.fjsc-slider:checked ~ .fjsc-toggle-container .fjsc-toggle-slider {
+    left: 22px;
 }
