@@ -98,3 +98,11 @@ export interface HeadingConfig extends BaseComponentConfig  {
     level?: IntRange<1, 6>;
     text: StringOrSignal;
 }
+
+export interface CheckboxConfig extends BaseComponentConfig {
+    onchange: Function,
+    text: HtmlPropertyValue,
+    checked: TypeOrSignal<boolean>,
+    name?: HtmlPropertyValue,
+    required?: boolean,
+}

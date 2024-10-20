@@ -55,7 +55,13 @@ function example() {
                         value: counter,
                         options: signal(options)
                     }),
-                    FJSC.checkbox("checkbox", true, "Checkbox"),
+                    FJSC.checkbox({
+                        onchange: (value) => {
+                            console.log("checkbox changed to " + value);
+                        },
+                        checked: true,
+                        text: "Checkbox"
+                    }),
                 ]
             }),
         ]

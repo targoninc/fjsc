@@ -3,8 +3,8 @@ import type {
     HtmlPropertyValue,
     TypeOrSignal,
 } from "./f2.ts";
-import type {
-    ButtonConfig,
+import {
+    ButtonConfig, CheckboxConfig,
     ContainerConfig,
     HeadingConfig,
     IconConfig,
@@ -217,19 +217,18 @@ export class FJSC {
         return element;
     }
 
-    static checkbox(name: HtmlPropertyValue, checked: TypeOrSignal<boolean> = false, text: HtmlPropertyValue = "", required = false, onchange = (v: boolean) => {
-    }) {
+    static checkbox(config: CheckboxConfig) {
         return create("label")
             .classes("fjsc-checkbox-container")
-            .text(text)
+            .text(config.text)
             .children(
                 create("input")
                     .type("checkbox")
-                    .name(name)
-                    .id(name)
-                    .required(required)
-                    .checked(checked)
-                    .onchange((e) => onchange((e.target as HTMLInputElement).checked))
+                    .name(config.name ?? "")
+                    .id(config.name ?? "")
+                    .required(config.required ?? false)
+                    .checked(config.checked)
+                    .onchange((e) => config.onchange((e.target as HTMLInputElement).checked))
                     .build(),
                 create("span")
                     .classes("fjsc-checkmark")
