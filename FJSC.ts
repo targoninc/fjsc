@@ -1,6 +1,9 @@
-import {computedSignal, create, DomNode, HtmlPropertyValue, ifjs, signal, signalMap, TypeOrSignal} from "./f2.ts";
+import {computedSignal, create, ifjs, signal, signalMap} from "./f2.ts";
 import type {
-    BaseComponentConfig,
+    HtmlPropertyValue,
+    TypeOrSignal,
+} from "./f2.ts";
+import type {
     ButtonConfig,
     ContainerConfig,
     HeadingConfig,
@@ -19,9 +22,9 @@ export class FJSC {
             .applyGenericConfig(config)
             .onclick(config.onclick)
             .children(
-                ifjs(config.icon, () => FJSC.icon(config.icon)),
-                ifjs(config.text, () => FJSC.text({
-                    text: config.text,
+                ifjs(config.icon, () => FJSC.icon(config.icon!)),
+                ifjs(config.text, () => FJSC.text(<TextConfig>{
+                    text: config.text!,
                 }))
             ).build();
     }
