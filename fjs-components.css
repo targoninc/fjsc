@@ -227,3 +227,50 @@ h5.fjsc {
 h6.fjsc {
     font-size: 0.67em;
 }
+
+.fjsc-checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.fjsc-checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.fjsc-checkbox-container input:focus-visible ~ .checkmark {
+    border: 2px solid var(--fjsc-interactive-border);
+}
+
+.fjsc-checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 14px;
+    width: 14px;
+    background-color: var(--fjsc-interactive-background);
+    border: 1px solid var(--fjsc-interactive-border);
+    border-radius: var(--fjsc-border-radius-small);
+}
+
+.fjsc-checkmark:hover {
+    background: var(--fjsc-interactive-background-hover);
+}
+
+.fjsc-checkmark-icon {
+    top: -4px;
+    position: absolute;
+    left: 2px;
+    font-size: 14px;
+    display: none;
+}
+
+.fjsc-checkbox-container input:checked ~ .fjsc-checkmark .fjsc-checkmark-icon {
+    display: initial;
+}

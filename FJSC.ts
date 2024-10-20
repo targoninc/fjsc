@@ -1,4 +1,4 @@
-import {computedSignal, create, DomNode, ifjs, signal, signalMap} from "./f2.ts";
+import {computedSignal, create, DomNode, HtmlPropertyValue, ifjs, signal, signalMap, TypeOrSignal} from "./f2.ts";
 import type {
     BaseComponentConfig,
     ButtonConfig,
@@ -212,5 +212,30 @@ export class FJSC {
                     .build()
             ).build();
         return element;
+    }
+
+    static checkbox(name: HtmlPropertyValue, checked: TypeOrSignal<boolean> = false, text: HtmlPropertyValue = "", required = false, onchange = (v: boolean) => {
+    }) {
+        return create("label")
+            .classes("fjsc-checkbox-container")
+            .text(text)
+            .children(
+                create("input")
+                    .type("checkbox")
+                    .name(name)
+                    .id(name)
+                    .required(required)
+                    .checked(checked)
+                    .onchange((e) => onchange((e.target as HTMLInputElement).checked))
+                    .build(),
+                create("span")
+                    .classes("fjsc-checkmark")
+                    .children(
+                        create("span")
+                            .classes("fjsc-checkmark-icon")
+                            .text("✓")
+                            .build()
+                    ).build(),
+            ).build();
     }
 }

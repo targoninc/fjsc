@@ -54,9 +54,10 @@ function example() {
                     FJSC.searchableSelect({
                         value: counter,
                         options: signal(options)
-                    })
+                    }),
+                    FJSC.checkbox("checkbox", true, "Checkbox"),
                 ]
-            })
+            }),
         ]
     })
 }
