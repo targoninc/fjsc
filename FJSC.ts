@@ -53,10 +53,10 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v")
+            .classes("flex-v", "fjsc")
             .children(
                 create("label")
-                    .classes("flex-v")
+                    .classes("flex-v", "fjsc")
                     .text(config.label ?? "")
                     .for(config.name)
                     .children(
@@ -111,10 +111,10 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v")
+            .classes("flex-v", "fjsc")
             .children(
                 create("label")
-                    .classes("flex-v")
+                    .classes("flex-v", "fjsc")
                     .text(config.label ?? "")
                     .for(config.name)
                     .children(
@@ -143,7 +143,7 @@ export class FJSC {
 
     static errorList(errors: Signal<string[]>) {
         return signalMap(errors, create("div")
-            .classes("flex-v", "fjsc-error-list"), (error: string) => FJSC.error(error));
+            .classes("flex-v", "fjsc", "fjsc-error-list"), (error: string) => FJSC.error(error));
     }
 
     static error(error: StringOrSignal) {
@@ -351,7 +351,7 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v")
+            .classes("flex-v", "fjsc")
             .children(
                 create("label")
                     .applyGenericConfig(config)
@@ -412,7 +412,7 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v")
+            .classes("flex-v", "fjsc")
             .children(
                 create("label")
                     .applyGenericConfig(config)

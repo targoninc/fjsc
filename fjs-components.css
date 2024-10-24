@@ -88,15 +88,15 @@
     height: 100%;
 }
 
-.flex, .flex-v {
+.fjsc.flex, .fjsc.flex-v {
     display: flex;
 }
 
-.flex-v {
+.fjsc.flex-v {
     flex-direction: column;
 }
 
-.gap {
+.fjsc.gap {
     gap: var(--fjsc-gap);
 }
 
