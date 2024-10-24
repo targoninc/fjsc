@@ -73,6 +73,7 @@ export interface TextareaConfig extends ChangeableConfig<string> {
     name: StringOrSignal;
     value: StringOrSignal;
     placeholder?: StringOrSignal;
+    resize?: "both" | "horizontal" | "vertical" | "none";
 }
 
 export interface ContainerConfig extends BaseComponentConfig {

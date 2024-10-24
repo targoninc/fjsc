@@ -144,6 +144,7 @@ export class FJSC {
                         create("textarea")
                             .classes(invalidClass)
                             .applyGenericConfig(config)
+                            .styles("resize", config.resize ?? "vertical")
                             .value(config.value)
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
