@@ -310,13 +310,18 @@ h6.fjsc {
     background: var(--fjsc-interactive-background-hover);
     position: relative;
     cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.invalid .fjsc-toggle-container {
+    border: 1px solid var(--fjsc-error-color);
 }
 
 .fjsc-toggle-slider {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    background: var(--fjsc-interactive-background);
+    background: var(--fjsc-interactive-background-active);
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -330,6 +335,7 @@ input.fjsc-slider:checked ~ .fjsc-toggle-container {
 
 input.fjsc-slider:checked ~ .fjsc-toggle-container .fjsc-toggle-slider {
     left: 22px;
+    background: var(--fjsc-interactive-background);
 }
 
 input.invalid {

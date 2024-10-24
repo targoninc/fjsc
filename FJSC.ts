@@ -38,6 +38,9 @@ export class FJSC {
                     errors.value = errors.value.concat(valErrors);
                 }
             });
+            if (config.required && (newValue === null || newValue === undefined || newValue === "")) {
+                errors.value.push("This field is required.");
+            }
         }
         if (config.value?.subscribe) {
             config.value.subscribe(validate);
@@ -52,6 +55,7 @@ export class FJSC {
                     .type(config.type)
                     .value(config.value)
                     .accept(config.accept)
+                    .required(config.required ?? false)
                     .placeholder(config.placeholder)
                     .onchange((e: any) => {
                         if (!config.value?.subscribe) {
@@ -278,9 +282,30 @@ export class FJSC {
     }
 
     static toggle(config: BooleanConfig) {
+        const errors = signal<string[]>([]);
+        function validate(newValue: boolean) {
+            errors.value = [];
+            config.validators?.forEach(async valFunction => {
+                const valErrors = await valFunction(newValue);
+                if (valErrors) {
+                    errors.value = errors.value.concat(valErrors);
+                }
+            });
+            if (config.required && (newValue === null || newValue === undefined || newValue === false)) {
+                errors.value = errors.value.concat(["This field is required."]);
+            }
+        }
+        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid": "valid");
+        if (config.checked.subscribe) {
+            config.checked.subscribe(validate);
+            validate(config.checked.value);
+        } else {
+            validate(config.checked as boolean);
+        }
+
         return create("label")
             .applyGenericConfig(config)
-            .classes("flex", "gap", "align-children")
+            .classes("flex", "gap", "align-children", invalidClass)
             .for(config.name ?? "")
             .children(
                 create("input")
@@ -289,7 +314,14 @@ export class FJSC {
                     .id(config.name ?? "")
                     .required(config.required ?? false)
                     .checked(config.checked)
-                    .onclick((e) => config.onchange && config.onchange((e.target as HTMLInputElement).checked))
+                    .onclick((e) => {
+                        const checked = (e.target as HTMLInputElement).checked;
+                        if (!config.checked.subscribe) {
+                            validate(checked);
+                        }
+
+                        config.onchange && config.onchange(checked);
+                    })
                     .build(),
                 create("div")
                     .classes("fjsc-toggle-container")

@@ -83,7 +83,8 @@ function example() {
                         onchange: (value) => {
                             console.log("toggle changed to " + value);
                         },
-                        checked: true,
+                        required: true,
+                        checked: false,
                         text: "Toggle"
                     }),
                 ]

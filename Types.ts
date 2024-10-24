@@ -110,5 +110,4 @@ export interface BooleanConfig extends ChangeableConfig<boolean> {
     text: HtmlPropertyValue,
     checked: TypeOrSignal<boolean>,
     name?: HtmlPropertyValue,
-    required?: boolean,
 }
