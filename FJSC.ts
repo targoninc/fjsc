@@ -16,7 +16,7 @@ import type {
 function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
     let disabledClass;
     if (config.disabled?.subscribe) {
-        disabledClass = computedSignal(config.disabled as Signal<boolean>, (newValue: boolean) =>
+        disabledClass = computedSignal<string>(config.disabled as Signal<boolean>, (newValue: boolean) =>
             newValue ? "disabled" : "enabled");
     } else {
         disabledClass = config.disabled ? "disabled" : "enabled";
