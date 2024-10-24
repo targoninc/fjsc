@@ -14,13 +14,12 @@ import type {
 } from "./Types.ts";
 
 function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
-    const disabledClass = signal("enabled");
+    let disabledClass;
     if (config.disabled?.subscribe) {
-        config.disabled.subscribe((newValue: boolean) => {
-            disabledClass.value = newValue ? "disabled" : "enabled";
-        });
+        disabledClass = computedSignal(config.disabled as Signal<boolean>, (newValue: boolean) =>
+            newValue ? "disabled" : "enabled");
     } else {
-        disabledClass.value = config.disabled ? "disabled" : "enabled";
+        disabledClass = config.disabled ? "disabled" : "enabled";
     }
 
     return disabledClass;
