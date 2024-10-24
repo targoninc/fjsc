@@ -40,7 +40,7 @@ export class FJSC {
                 }
             });
             if (config.required && (newValue === null || newValue === undefined || newValue === "")) {
-                errors.value.push("This field is required.");
+                errors.value = errors.value.concat(["This field is required."]);
             }
         }
 
