@@ -351,3 +351,12 @@ input.invalid, textarea.invalid {
     color: var(--fjsc-error-color);
     font-size: 0.9em;
 }
+
+.disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.disabled * {
+    pointer-events: none;
+}

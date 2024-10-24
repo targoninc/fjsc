@@ -47,6 +47,7 @@ export interface ButtonConfig extends BaseComponentConfig {
     text: StringOrSignal;
     onclick: EventHandler<MouseEvent>;
     icon?: IconConfig;
+    disabled?: TypeOrSignal<boolean>;
 }
 
 export type ValidatorFunction<T> = (value: T) => (string[] | null | undefined) | Promise<string[] | null | undefined>;
@@ -57,6 +58,7 @@ export interface ChangeableConfig<T = any> extends BaseComponentConfig {
     required?: boolean;
     autofocus?: boolean;
     label?: HtmlPropertyValue;
+    disabled?: TypeOrSignal<boolean>;
 }
 
 export interface InputConfig<T> extends ChangeableConfig<T> {

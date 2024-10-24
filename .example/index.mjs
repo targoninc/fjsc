@@ -1,5 +1,5 @@
 import {FJSC} from "../FJSC.js";
-import {signal} from "../f2.js";
+import {computedSignal, signal} from "../f2.js";
 import {InputType} from "../Types.js";
 
 const options = [
@@ -47,6 +47,7 @@ function example() {
                         onchange: (value) => {
                             counter.value = value;
                         },
+                        disabled: computedSignal(counter, c => c == 5),
                         type: InputType.number,
                         value: counter,
                         label: "Enter a number",

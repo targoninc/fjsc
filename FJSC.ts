@@ -1,5 +1,5 @@
 import {computedSignal, create, ifjs, Signal, signal, signalMap} from "./f2.ts";
-import type {StringOrSignal} from "./f2.ts";
+import type {StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
 import type {
     ButtonConfig,
     BooleanConfig,
@@ -13,10 +13,25 @@ import type {
     TextConfig, TextareaConfig
 } from "./Types.ts";
 
+function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
+    const disabledClass = signal("enabled");
+    if (config.disabled?.subscribe) {
+        config.disabled.subscribe((newValue: boolean) => {
+            disabledClass.value = newValue ? "disabled" : "enabled";
+        });
+    } else {
+        disabledClass.value = config.disabled ? "disabled" : "enabled";
+    }
+
+    return disabledClass;
+}
+
 export class FJSC {
     static button(config: ButtonConfig) {
         config.classes ??= [];
+
         return create("button")
+            .classes(getDisabledClass(config))
             .applyGenericConfig(config)
             .onclick(config.onclick)
             .children(
@@ -56,7 +71,7 @@ export class FJSC {
             .classes("flex-v", "fjsc")
             .children(
                 create("label")
-                    .classes("flex-v", "fjsc")
+                    .classes("flex-v", "fjsc", getDisabledClass(config))
                     .text(config.label ?? "")
                     .for(config.name)
                     .children(
@@ -123,7 +138,7 @@ export class FJSC {
             .classes("flex-v", "fjsc")
             .children(
                 create("label")
-                    .classes("flex-v", "fjsc")
+                    .classes("flex-v", "fjsc", getDisabledClass(config))
                     .text(config.label ?? "")
                     .for(config.name)
                     .children(
@@ -258,7 +273,7 @@ export class FJSC {
                     .classes("flex", "fjsc-search-select-visible", "fjsc")
                     .children(
                         create("input")
-                            .classes("fjsc", "fjsc-search-select-input")
+                            .classes("fjsc", "fjsc-search-select-input", getDisabledClass(config))
                             .value(search)
                             .onfocus(() => {
                                 optionsVisible.value = true;
@@ -299,7 +314,7 @@ export class FJSC {
                             })
                             .build(),
                         create("div")
-                            .classes("fjsc-search-select-dropdown")
+                            .classes("fjsc-search-select-dropdown", getDisabledClass(config))
                             .onclick(() => {
                                 optionsVisible.value = !optionsVisible.value;
                             })
@@ -373,7 +388,7 @@ export class FJSC {
             .children(
                 create("label")
                     .applyGenericConfig(config)
-                    .classes("fjsc-checkbox-container", invalidClass)
+                    .classes("fjsc-checkbox-container", invalidClass, getDisabledClass(config))
                     .text(config.text)
                     .children(
                         create("input")
@@ -434,7 +449,7 @@ export class FJSC {
             .children(
                 create("label")
                     .applyGenericConfig(config)
-                    .classes("flex", "gap", "align-children", invalidClass)
+                    .classes("flex", "gap", "align-children", invalidClass, getDisabledClass(config))
                     .for(config.name ?? "")
                     .children(
                         create("input")
