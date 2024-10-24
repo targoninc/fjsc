@@ -67,6 +67,12 @@ export interface InputConfig<T> extends ChangeableConfig<T> {
     accept?: StringOrSignal;
 }
 
+export interface TextareaConfig extends ChangeableConfig<string> {
+    name: StringOrSignal;
+    value: StringOrSignal;
+    placeholder?: StringOrSignal;
+}
+
 export interface ContainerConfig extends BaseComponentConfig {
     tag: string;
     children: (DomNode)[];

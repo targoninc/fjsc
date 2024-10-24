@@ -10,7 +10,7 @@ import type {
     SearchableSelectConfig,
     SelectOption,
     SelectOptionConfig,
-    TextConfig
+    TextConfig, TextareaConfig
 } from "./Types.ts";
 
 export class FJSC {
@@ -66,6 +66,62 @@ export class FJSC {
                             .type(config.type)
                             .value(config.value)
                             .accept(config.accept ?? "")
+                            .required(config.required ?? false)
+                            .placeholder(config.placeholder ?? "")
+                            .attributes("autofocus", config.autofocus ?? "")
+                            .onchange((e: any) => {
+                                if (!config.value?.subscribe) {
+                                    validate(e.target.value);
+                                }
+
+                                if (config.onchange) {
+                                    config.onchange(e.target.value);
+                                }
+                            })
+                            .name(config.name)
+                            .build(),
+                    ).build(),
+                ifjs(hasError, FJSC.errorList(errors))
+            ).build();
+    }
+
+    static textarea(config: TextareaConfig) {
+        const errors = signal<string[]>([]);
+        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
+        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+
+        function validate(newValue: any) {
+            errors.value = [];
+            config.validators?.forEach(async valFunction => {
+                const valErrors = await valFunction(newValue);
+                if (valErrors) {
+                    errors.value = errors.value.concat(valErrors);
+                }
+            });
+            if (config.required && (newValue === null || newValue === undefined || newValue === "")) {
+                errors.value = errors.value.concat(["This field is required."]);
+            }
+        }
+
+        if (config.value?.subscribe) {
+            config.value.subscribe(validate);
+            validate(config.value.value);
+        } else {
+            validate(config.value as string);
+        }
+
+        return create("div")
+            .classes("flex-v")
+            .children(
+                create("label")
+                    .classes("flex-v")
+                    .text(config.label ?? "")
+                    .for(config.name)
+                    .children(
+                        create("textarea")
+                            .classes(invalidClass)
+                            .applyGenericConfig(config)
+                            .value(config.value)
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
                             .attributes("autofocus", config.autofocus ?? "")

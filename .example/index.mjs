@@ -69,6 +69,12 @@ function example() {
                             }
                         ]
                     }),
+                    FJSC.textarea({
+                        value: "some text",
+                        label: "Long text",
+                        required: true,
+                        placeholder: "Some text yo",
+                    }),
                     FJSC.searchableSelect({
                         value: counter,
                         options: signal(options)
