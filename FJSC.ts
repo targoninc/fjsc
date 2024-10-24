@@ -46,6 +46,9 @@ export class FJSC {
 
         if (config.value?.subscribe) {
             config.value.subscribe(validate);
+            validate(config.value.value);
+        } else {
+            validate(config.value as T);
         }
 
         return create("div")
