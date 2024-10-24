@@ -30,6 +30,7 @@ export class FJSC {
     static input<T>(config: InputConfig<T>) {
         const errors = signal<string[]>([]);
         const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
+
         function validate(newValue: any) {
             errors.value = [];
             config.validators?.forEach(async valFunction => {
@@ -42,6 +43,7 @@ export class FJSC {
                 errors.value.push("This field is required.");
             }
         }
+
         if (config.value?.subscribe) {
             config.value.subscribe(validate);
         }
@@ -225,14 +227,14 @@ export class FJSC {
                             ).build()
                     ).build(),
                 ifjs(optionsVisible, signalMap(filtered, create("div").classes("fjsc-search-select-options", "flex-v"), (option: SelectOption) =>
-                    FJSC.searchSelectOption({ option, value, search, optionsVisible, selectedId })))
+                    FJSC.searchSelectOption({option, value, search, optionsVisible, selectedId})))
             ).build();
     }
 
     static searchSelectOption(config: SelectOptionConfig) {
         let element: any;
         const selectedClass = computedSignal<string>(config.selectedId, (id: string) => {
-            element?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            element?.scrollIntoView({behavior: "smooth", block: "nearest"});
             return id === config.option.id ? "selected" : "_";
         });
 
@@ -258,6 +260,7 @@ export class FJSC {
 
     static checkbox(config: BooleanConfig) {
         const errors = signal<string[]>([]);
+
         function validate(newValue: boolean) {
             errors.value = [];
             config.validators?.forEach(async valFunction => {
@@ -270,7 +273,8 @@ export class FJSC {
                 errors.value = errors.value.concat(["This field is required."]);
             }
         }
-        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid": "valid");
+
+        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
         if (config.checked.subscribe) {
             config.checked.subscribe(validate);
             validate(config.checked.value);
@@ -278,39 +282,45 @@ export class FJSC {
             validate(config.checked as boolean);
         }
 
-        return create("label")
-            .applyGenericConfig(config)
-            .classes("fjsc-checkbox-container", invalidClass)
-            .text(config.text)
+        return create("div")
+            .classes("flex-v")
             .children(
-                create("input")
-                    .type("checkbox")
-                    .name(config.name ?? "")
-                    .id(config.name ?? "")
-                    .required(config.required ?? false)
-                    .checked(config.checked)
-                    .onclick((e) => {
-                        const checked = (e.target as HTMLInputElement).checked;
-                        if (!config.checked.subscribe) {
-                            validate(checked);
-                        }
-
-                        config.onchange && config.onchange(checked);
-                    })
-                    .build(),
-                create("span")
-                    .classes("fjsc-checkmark")
+                create("label")
+                    .applyGenericConfig(config)
+                    .classes("fjsc-checkbox-container", invalidClass)
+                    .text(config.text)
                     .children(
+                        create("input")
+                            .type("checkbox")
+                            .name(config.name ?? "")
+                            .id(config.name ?? "")
+                            .required(config.required ?? false)
+                            .checked(config.checked)
+                            .onclick((e) => {
+                                const checked = (e.target as HTMLInputElement).checked;
+                                if (!config.checked.subscribe) {
+                                    validate(checked);
+                                }
+
+                                config.onchange && config.onchange(checked);
+                            })
+                            .build(),
                         create("span")
-                            .classes("fjsc-checkmark-icon")
-                            .text("✓")
-                            .build()
+                            .classes("fjsc-checkmark")
+                            .children(
+                                create("span")
+                                    .classes("fjsc-checkmark-icon")
+                                    .text("✓")
+                                    .build()
+                            ).build(),
                     ).build(),
+                FJSC.errorList(errors)
             ).build();
     }
 
     static toggle(config: BooleanConfig) {
         const errors = signal<string[]>([]);
+
         function validate(newValue: boolean) {
             errors.value = [];
             config.validators?.forEach(async valFunction => {
@@ -323,7 +333,8 @@ export class FJSC {
                 errors.value = errors.value.concat(["This field is required."]);
             }
         }
-        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid": "valid");
+
+        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
         if (config.checked.subscribe) {
             config.checked.subscribe(validate);
             validate(config.checked.value);
@@ -331,37 +342,42 @@ export class FJSC {
             validate(config.checked as boolean);
         }
 
-        return create("label")
-            .applyGenericConfig(config)
-            .classes("flex", "gap", "align-children", invalidClass)
-            .for(config.name ?? "")
+        return create("div")
+            .classes("flex-v")
             .children(
-                create("input")
-                    .type("checkbox")
-                    .classes("hidden", "fjsc-slider")
-                    .id(config.name ?? "")
-                    .required(config.required ?? false)
-                    .checked(config.checked)
-                    .onclick((e) => {
-                        const checked = (e.target as HTMLInputElement).checked;
-                        if (!config.checked.subscribe) {
-                            validate(checked);
-                        }
-
-                        config.onchange && config.onchange(checked);
-                    })
-                    .build(),
-                create("div")
-                    .classes("fjsc-toggle-container")
+                create("label")
+                    .applyGenericConfig(config)
+                    .classes("flex", "gap", "align-children", invalidClass)
+                    .for(config.name ?? "")
                     .children(
+                        create("input")
+                            .type("checkbox")
+                            .classes("hidden", "fjsc-slider")
+                            .id(config.name ?? "")
+                            .required(config.required ?? false)
+                            .checked(config.checked)
+                            .onclick((e) => {
+                                const checked = (e.target as HTMLInputElement).checked;
+                                if (!config.checked.subscribe) {
+                                    validate(checked);
+                                }
+
+                                config.onchange && config.onchange(checked);
+                            })
+                            .build(),
+                        create("div")
+                            .classes("fjsc-toggle-container")
+                            .children(
+                                create("span")
+                                    .classes("fjsc-toggle-slider")
+                                    .build()
+                            ).build(),
                         create("span")
-                            .classes("fjsc-toggle-slider")
-                            .build()
+                            .classes("fjsc-toggle-text")
+                            .text(config.text ?? "")
+                            .build(),
                     ).build(),
-                create("span")
-                    .classes("fjsc-toggle-text")
-                    .text(config.text ?? "")
-                    .build(),
+                FJSC.errorList(errors)
             ).build();
     }
 }
