@@ -55,26 +55,32 @@ export class FJSC {
         return create("div")
             .classes("flex-v")
             .children(
-                create("input")
-                    .classes(invalidClass)
-                    .applyGenericConfig(config)
-                    .type(config.type)
-                    .value(config.value)
-                    .accept(config.accept ?? "")
-                    .required(config.required ?? false)
-                    .placeholder(config.placeholder ?? "")
-                    .attributes("autofocus", config.autofocus ?? "")
-                    .onchange((e: any) => {
-                        if (!config.value?.subscribe) {
-                            validate(e.target.value);
-                        }
+                create("label")
+                    .classes("flex-v")
+                    .text(config.label ?? "")
+                    .for(config.name)
+                    .children(
+                        create("input")
+                            .classes(invalidClass)
+                            .applyGenericConfig(config)
+                            .type(config.type)
+                            .value(config.value)
+                            .accept(config.accept ?? "")
+                            .required(config.required ?? false)
+                            .placeholder(config.placeholder ?? "")
+                            .attributes("autofocus", config.autofocus ?? "")
+                            .onchange((e: any) => {
+                                if (!config.value?.subscribe) {
+                                    validate(e.target.value);
+                                }
 
-                        if (config.onchange) {
-                            config.onchange(e.target.value);
-                        }
-                    })
-                    .name(config.name)
-                    .build(),
+                                if (config.onchange) {
+                                    config.onchange(e.target.value);
+                                }
+                            })
+                            .name(config.name)
+                            .build(),
+                    ).build(),
                 ifjs(hasError, FJSC.errorList(errors))
             ).build();
     }

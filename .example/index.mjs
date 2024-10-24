@@ -49,6 +49,7 @@ function example() {
                         },
                         type: InputType.number,
                         value: counter,
+                        label: "Enter a number",
                         placeholder: "Enter a number",
                         validators: [
                             (value) => {

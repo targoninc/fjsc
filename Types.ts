@@ -56,6 +56,7 @@ export interface ChangeableConfig<T = any> extends BaseComponentConfig {
     validators?: ValidatorFunction<T>[];
     required?: boolean;
     autofocus?: boolean;
+    label?: HtmlPropertyValue;
 }
 
 export interface InputConfig<T> extends ChangeableConfig<T> {
