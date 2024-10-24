@@ -94,6 +94,7 @@
 
 .fjsc.flex-v {
     flex-direction: column;
+    gap: var(--fjsc-gap);
 }
 
 .fjsc.gap {
