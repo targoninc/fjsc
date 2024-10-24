@@ -32,7 +32,7 @@ function example() {
                 text: "Counter example"
             }),
             FJSC.container({
-                classes: ["flex", "gap", "align-children", "wrap"],
+                classes: ["flex", "gap", "wrap"],
                 children: [
                     FJSC.text({
                         text: counter
@@ -49,7 +49,24 @@ function example() {
                         },
                         type: InputType.number,
                         value: counter,
-                        placeholder: "Enter a number"
+                        placeholder: "Enter a number",
+                        validators: [
+                            (value) => {
+                                if (parseInt(value) % 2 === 0) {
+                                    return ["number must not be even"];
+                                }
+                            },
+                            (value) => {
+                                if (value === "4") {
+                                    return ["number must not be 4"];
+                                }
+                            },
+                            (value) => {
+                                if (value === "") {
+                                    return ["number must not be empty"];
+                                }
+                            }
+                        ]
                     }),
                     FJSC.searchableSelect({
                         value: counter,

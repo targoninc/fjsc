@@ -21,6 +21,18 @@
     --fjsc-secondary-900: #062133;
     --fjsc-secondary-1000: #161819;
 
+    --fjsc-red-100: #ff6666;
+    --fjsc-red-200: #ff4d4d;
+    --fjsc-red-300: #ff3333;
+    --fjsc-red-400: #ff1a1a;
+    --fjsc-red-500: #ff0000;
+    --fjsc-red-600: #cc0000;
+    --fjsc-red-700: #990000;
+    --fjsc-red-800: #660000;
+    --fjsc-red-900: #330000;
+
+    --fjsc-error-color: var(--fjsc-red-300);
+
     --fjsc-area-background: var(--fjsc-primary-900);
     --fjsc-area-border: var(--fjsc-primary-800);
 
@@ -100,6 +112,10 @@
     flex-wrap: wrap;
 }
 
+label.fjsc {
+    height: max-content;
+}
+
 .fjsc {
     font-family: var(--fjsc-font), sans-serif;
     font-size: var(--fjsc-base-font-size);
@@ -131,6 +147,10 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     height: initial !important;
 }
 
+button.fjsc {
+    height: max-content !important;
+}
+
 button.fjsc:hover {
     cursor: pointer;
 }
@@ -147,6 +167,10 @@ button.fjsc.active, input.fjsc.active, select.fjsc.active, textarea.fjsc.active 
 button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, textarea.fjsc:focus-visible {
     outline: none;
     border: 1px solid var(--fjsc-interactive-border-focused);
+}
+
+.fjsc-search-select {
+    height: max-content;
 }
 
 .fjsc-search-select-options {
@@ -306,4 +330,13 @@ input.fjsc-slider:checked ~ .fjsc-toggle-container {
 
 input.fjsc-slider:checked ~ .fjsc-toggle-container .fjsc-toggle-slider {
     left: 22px;
+}
+
+input.invalid {
+    border-color: var(--fjsc-error-color);
+}
+
+.fjsc-error {
+    color: var(--fjsc-error-color);
+    font-size: 0.9em;
 }

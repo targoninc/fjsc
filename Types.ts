@@ -49,6 +49,8 @@ export interface ButtonConfig extends BaseComponentConfig {
     icon?: IconConfig;
 }
 
+export type ValidatorFunction<T> = (value: T) => (string[] | null | undefined) | Promise<string[] | null | undefined>;
+
 export interface InputConfig  extends BaseComponentConfig{
     name: StringOrSignal;
     accept: StringOrSignal;
@@ -56,6 +58,7 @@ export interface InputConfig  extends BaseComponentConfig{
     placeholder: StringOrSignal;
     value: StringOrSignal;
     onchange?: (value: string) => void;
+    validators?: ValidatorFunction<any>[];
 }
 
 export interface ContainerConfig extends BaseComponentConfig {

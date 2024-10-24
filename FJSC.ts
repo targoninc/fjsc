@@ -1,10 +1,8 @@
-import {computedSignal, create, ifjs, signal, signalMap} from "./f2.ts";
+import {computedSignal, create, ifjs, Signal, signal, signalMap} from "./f2.ts";
+import type {StringOrSignal} from "./f2.ts";
 import type {
-    HtmlPropertyValue,
-    TypeOrSignal,
-} from "./f2.ts";
-import {
-    ButtonConfig, BooleanConfig,
+    ButtonConfig,
+    BooleanConfig,
     ContainerConfig,
     HeadingConfig,
     IconConfig,
@@ -30,18 +28,55 @@ export class FJSC {
     }
 
     static input(config: InputConfig) {
-        return create("input")
-            .applyGenericConfig(config)
-            .type(config.type)
-            .value(config.value)
-            .accept(config.accept)
-            .placeholder(config.placeholder)
-            .onchange((e: any) => {
-                if (config.onchange) {
-                    config.onchange(e.target.value);
+        const errors = signal<string[]>([]);
+        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
+        function validate(newValue: any) {
+            errors.value = [];
+            config.validators?.forEach(async valFunction => {
+                const valErrors = await valFunction(newValue);
+                if (valErrors) {
+                    errors.value = errors.value.concat(valErrors);
                 }
-            })
-            .name(config.name)
+            });
+        }
+        if (config.value?.subscribe) {
+            config.value.subscribe(validate);
+        }
+
+        return create("div")
+            .classes("flex-v")
+            .children(
+                create("input")
+                    .classes(invalidClass)
+                    .applyGenericConfig(config)
+                    .type(config.type)
+                    .value(config.value)
+                    .accept(config.accept)
+                    .placeholder(config.placeholder)
+                    .onchange((e: any) => {
+                        if (!config.value?.subscribe) {
+                            validate(e.target.value);
+                        }
+
+                        if (config.onchange) {
+                            config.onchange(e.target.value);
+                        }
+                    })
+                    .name(config.name)
+                    .build(),
+                FJSC.errorList(errors)
+            ).build();
+    }
+
+    static errorList(errors: Signal<string[]>) {
+        return signalMap(errors, create("div")
+            .classes("flex-v", "fjsc-error-list"), (error: string) => FJSC.error(error));
+    }
+
+    static error(error: StringOrSignal) {
+        return create("span")
+            .classes("fjsc-error")
+            .text(error)
             .build();
     }
 

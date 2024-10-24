@@ -51,11 +51,18 @@ export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback
             return;
         }
         const children = [];
-        for (let i = 0; i < newValue.length; i++) {
-            children.push(callback(newValue[i], i));
+        if (renderSequentially) {
+            wrapper.overwriteChildren();
+            for (let i = 0; i < newValue.length; i++) {
+                wrapper.children(callback(newValue[i], i));
+            }
+        } else {
+            for (let i = 0; i < newValue.length; i++) {
+                children.push(callback(newValue[i], i));
+            }
+            // @ts-ignore
+            wrapper.overwriteChildren(...children);
         }
-        // @ts-ignore
-        wrapper.overwriteChildren(...children);
     };
     arrayState.subscribe(update);
     update(arrayState.value);
