@@ -1,5 +1,5 @@
 import {computedSignal, create, ifjs, Signal, signal, signalMap} from "./f2.ts";
-import type {StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
+import type {StringOrSignal, TypeOrSignal} from "./f2.ts";
 import type {
     ButtonConfig,
     BooleanConfig,

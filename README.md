@@ -1,15 +1,18 @@
-# fjs-components
+# FJSC (FJS Components)
 
-To install dependencies:
+FJSC is a library containing a set of components that can be used to build web applications.
 
-```bash
-bun install
-```
+## Add to repository via git submodule (recommended)
 
-To run:
+Switch to the folder where you want to add the library and run the following command:
 
 ```bash
-bun run .example/index.mjs
+git submodule add https://github.com/targoninc/fjsc.git
 ```
 
-This project was created using `bun init` in bun v1.1.31. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Alternatively, you can download the repository and include it as a subfolder.
+Using submodules is recommended, as it allows you to easily update the library.
+
+# Example usage
+
+See [./.example/index.mjs](./.example/index.mjs) for an example of how to use FJSC.
