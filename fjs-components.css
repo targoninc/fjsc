@@ -145,7 +145,6 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     border: 1px solid var(--fjsc-interactive-border);
     background: var(--fjsc-interactive-background);
     color: var(--fjsc-interactive-color);
-    height: initial !important;
 }
 
 button.fjsc {
