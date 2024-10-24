@@ -149,6 +149,7 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
 
 button.fjsc {
     height: max-content !important;
+    border-bottom: 3px solid var(--fjsc-interactive-border);
 }
 
 button.fjsc:hover {
@@ -166,7 +167,7 @@ button.fjsc.active, input.fjsc.active, select.fjsc.active, textarea.fjsc.active 
 
 button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, textarea.fjsc:focus-visible {
     outline: none;
-    border: 1px solid var(--fjsc-interactive-border-focused);
+    border-color: var(--fjsc-interactive-border-focused);
 }
 
 .fjsc-search-select {
@@ -203,6 +204,7 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
     cursor: pointer;
     padding: var(--fjsc-input-padding-y) var(--fjsc-input-padding-x);
     border: 1px solid var(--fjsc-interactive-border);
+    border-bottom: 3px solid var(--fjsc-interactive-border);
     border-radius: 0 var(--fjsc-border-radius-small) var(--fjsc-border-radius-small) 0;
     border-left: none;
     line-height: 1;
