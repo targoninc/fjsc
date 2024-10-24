@@ -205,6 +205,7 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
     border: 1px solid var(--fjsc-interactive-border);
     border-radius: 0 var(--fjsc-border-radius-small) var(--fjsc-border-radius-small) 0;
     border-left: none;
+    line-height: 1;
 }
 
 .fjsc-search-select-dropdown:hover {
