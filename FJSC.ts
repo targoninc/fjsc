@@ -29,7 +29,8 @@ export class FJSC {
 
     static input<T>(config: InputConfig<T>) {
         const errors = signal<string[]>([]);
-        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
+        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
+        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
 
         function validate(newValue: any) {
             errors.value = [];
@@ -59,10 +60,10 @@ export class FJSC {
                     .applyGenericConfig(config)
                     .type(config.type)
                     .value(config.value)
-                    .accept(config.accept)
+                    .accept(config.accept ?? "")
                     .required(config.required ?? false)
-                    .placeholder(config.placeholder)
-                    .attributes("autofocus", config.autofocus)
+                    .placeholder(config.placeholder ?? "")
+                    .attributes("autofocus", config.autofocus ?? "")
                     .onchange((e: any) => {
                         if (!config.value?.subscribe) {
                             validate(e.target.value);
@@ -74,7 +75,7 @@ export class FJSC {
                     })
                     .name(config.name)
                     .build(),
-                FJSC.errorList(errors)
+                ifjs(hasError, FJSC.errorList(errors))
             ).build();
     }
 
@@ -264,6 +265,8 @@ export class FJSC {
 
     static checkbox(config: BooleanConfig) {
         const errors = signal<string[]>([]);
+        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
+        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
 
         function validate(newValue: boolean) {
             errors.value = [];
@@ -278,7 +281,6 @@ export class FJSC {
             }
         }
 
-        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
         if (config.checked.subscribe) {
             config.checked.subscribe(validate);
             validate(config.checked.value);
@@ -318,12 +320,14 @@ export class FJSC {
                                     .build()
                             ).build(),
                     ).build(),
-                FJSC.errorList(errors)
+                ifjs(hasError, FJSC.errorList(errors))
             ).build();
     }
 
     static toggle(config: BooleanConfig) {
         const errors = signal<string[]>([]);
+        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
+        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
 
         function validate(newValue: boolean) {
             errors.value = [];
@@ -338,7 +342,6 @@ export class FJSC {
             }
         }
 
-        const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
         if (config.checked.subscribe) {
             config.checked.subscribe(validate);
             validate(config.checked.value);
@@ -381,7 +384,7 @@ export class FJSC {
                             .text(config.text ?? "")
                             .build(),
                     ).build(),
-                FJSC.errorList(errors)
+                ifjs(hasError, FJSC.errorList(errors))
             ).build();
     }
 }
