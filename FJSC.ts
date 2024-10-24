@@ -27,7 +27,7 @@ export class FJSC {
             ).build();
     }
 
-    static input(config: InputConfig) {
+    static input<T>(config: InputConfig<T>) {
         const errors = signal<string[]>([]);
         const invalidClass = computedSignal<string>(errors, (e: string[]) => e.length > 0 ? "invalid" : "valid");
         function validate(newValue: any) {
@@ -264,7 +264,7 @@ export class FJSC {
                     .id(config.name ?? "")
                     .required(config.required ?? false)
                     .checked(config.checked)
-                    .onchange((e) => config.onchange((e.target as HTMLInputElement).checked))
+                    .onchange((e) => config.onchange && config.onchange((e.target as HTMLInputElement).checked))
                     .build(),
                 create("span")
                     .classes("fjsc-checkmark")
@@ -289,7 +289,7 @@ export class FJSC {
                     .id(config.name ?? "")
                     .required(config.required ?? false)
                     .checked(config.checked)
-                    .onclick((e) => config.onchange((e.target as HTMLInputElement).checked))
+                    .onclick((e) => config.onchange && config.onchange((e.target as HTMLInputElement).checked))
                     .build(),
                 create("div")
                     .classes("fjsc-toggle-container")

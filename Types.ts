@@ -51,14 +51,18 @@ export interface ButtonConfig extends BaseComponentConfig {
 
 export type ValidatorFunction<T> = (value: T) => (string[] | null | undefined) | Promise<string[] | null | undefined>;
 
-export interface InputConfig  extends BaseComponentConfig{
+export interface ChangeableConfig<T = any> extends BaseComponentConfig {
+    onchange?: (value: T) => void;
+    validators?: ValidatorFunction<T>[];
+    required?: boolean;
+}
+
+export interface InputConfig<T> extends ChangeableConfig<T> {
     name: StringOrSignal;
     accept: StringOrSignal;
     type: TypeOrSignal<InputType>;
     placeholder: StringOrSignal;
     value: StringOrSignal;
-    onchange?: (value: string) => void;
-    validators?: ValidatorFunction<any>[];
 }
 
 export interface ContainerConfig extends BaseComponentConfig {
@@ -92,9 +96,9 @@ export interface SelectOptionConfig extends BaseComponentConfig  {
     selectedId: Signal<any>;
 }
 
-export interface SearchableSelectConfig extends BaseComponentConfig  {
+export interface SearchableSelectConfig<T = string> extends ChangeableConfig<T> {
     options: Signal<SelectOption[]>;
-    value: Signal<any>;
+    value: Signal<T>;
 }
 
 export interface HeadingConfig extends BaseComponentConfig  {
@@ -102,8 +106,7 @@ export interface HeadingConfig extends BaseComponentConfig  {
     text: StringOrSignal;
 }
 
-export interface BooleanConfig extends BaseComponentConfig {
-    onchange: Function,
+export interface BooleanConfig extends ChangeableConfig<boolean> {
     text: HtmlPropertyValue,
     checked: TypeOrSignal<boolean>,
     name?: HtmlPropertyValue,
