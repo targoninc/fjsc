@@ -69,6 +69,15 @@ export class FJSC {
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
                             .attributes("autofocus", config.autofocus ?? "")
+                            .oninput((e: any) => {
+                                if (!config.value?.subscribe) {
+                                    validate(e.target.value);
+                                }
+
+                                if (config.onchange) {
+                                    config.onchange(e.target.value);
+                                }
+                            })
                             .onchange((e: any) => {
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
@@ -125,6 +134,15 @@ export class FJSC {
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
                             .attributes("autofocus", config.autofocus ?? "")
+                            .oninput((e: any) => {
+                                if (!config.value?.subscribe) {
+                                    validate(e.target.value);
+                                }
+
+                                if (config.onchange) {
+                                    config.onchange(e.target.value);
+                                }
+                            })
                             .onchange((e: any) => {
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
@@ -237,7 +255,7 @@ export class FJSC {
             .classes("fjsc-search-select", "flex-v", "relative")
             .children(
                 create("div")
-                    .classes("flex", "fjsc-search-select-visible")
+                    .classes("flex", "fjsc-search-select-visible", "fjsc")
                     .children(
                         create("input")
                             .classes("fjsc", "fjsc-search-select-input")
