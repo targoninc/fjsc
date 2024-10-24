@@ -276,6 +276,10 @@ h6.fjsc {
     border: 2px solid var(--fjsc-interactive-border);
 }
 
+.invalid .fjsc-checkmark {
+    border-color: var(--fjsc-error-color);
+}
+
 .fjsc-checkmark {
     position: absolute;
     top: 2px;
@@ -307,7 +311,7 @@ h6.fjsc {
     width: 40px;
     height: 20px;
     border-radius: 10px;
-    background: var(--fjsc-interactive-background-hover);
+    background: var(--fjsc-interactive-background);
     position: relative;
     cursor: pointer;
     border: 1px solid transparent;
