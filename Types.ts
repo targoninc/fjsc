@@ -62,7 +62,7 @@ export interface ChangeableConfig<T = any> extends BaseComponentConfig {
 export interface InputConfig<T> extends ChangeableConfig<T> {
     name: StringOrSignal;
     type: TypeOrSignal<InputType>;
-    value: StringOrSignal;
+    value: TypeOrSignal<T>;
     placeholder?: StringOrSignal;
     accept?: StringOrSignal;
 }
