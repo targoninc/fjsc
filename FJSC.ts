@@ -101,6 +101,7 @@ export class FJSC {
                                     config.onchange(e.target.value);
                                 }
                             })
+                            .onkeydown(config.onkeydown ?? (() => {}))
                             .name(config.name)
                             .build(),
                     ).build(),
