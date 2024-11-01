@@ -47,11 +47,19 @@ export class FJSC {
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
         const touched = signal(false);
         let lastChange = 0;
+        let debounceTimeout: number | undefined;
 
         function validate(newValue: any) {
             errors.value = [];
             if (config.debounce) {
                 if (Date.now() - lastChange < config.debounce) {
+                    if (debounceTimeout) {
+                        clearTimeout(debounceTimeout);
+                    }
+                    debounceTimeout = setTimeout(() => {
+                        debounceTimeout = undefined;
+                        validate(newValue);
+                    }, config.debounce);
                     return;
                 }
             }
