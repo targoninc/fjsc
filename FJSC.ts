@@ -45,6 +45,7 @@ export class FJSC {
         const errors = signal<string[]>([]);
         const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+        const touched = signal(false);
 
         function validate(newValue: any) {
             errors.value = [];
@@ -54,7 +55,7 @@ export class FJSC {
                     errors.value = errors.value.concat(valErrors);
                 }
             });
-            if (config.required && (newValue === null || newValue === undefined || newValue === "")) {
+            if (config.required && (newValue === null || newValue === undefined || newValue === "") && touched.value) {
                 errors.value = errors.value.concat(["This field is required."]);
             }
         }
@@ -84,6 +85,7 @@ export class FJSC {
                             .placeholder(config.placeholder ?? "")
                             .attributes("autofocus", config.autofocus ?? "")
                             .oninput((e: any) => {
+                                touched.value = true;
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
                                 }
@@ -93,6 +95,7 @@ export class FJSC {
                                 }
                             })
                             .onchange((e: any) => {
+                                touched.value = true;
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
                                 }
