@@ -46,9 +46,15 @@ export class FJSC {
         const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
         const touched = signal(false);
+        let lastChange = 0;
 
         function validate(newValue: any) {
             errors.value = [];
+            if (config.debounce) {
+                if (Date.now() - lastChange < config.debounce) {
+                    return;
+                }
+            }
             config.validators?.forEach(async valFunction => {
                 const valErrors = await valFunction(newValue);
                 if (valErrors) {
@@ -86,6 +92,7 @@ export class FJSC {
                             .attributes("autofocus", config.autofocus ?? "")
                             .oninput((e: any) => {
                                 touched.value = true;
+                                lastChange = Date.now();
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
                                 }
@@ -96,6 +103,7 @@ export class FJSC {
                             })
                             .onchange((e: any) => {
                                 touched.value = true;
+                                lastChange = Date.now();
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
                                 }

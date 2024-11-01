@@ -68,6 +68,7 @@ export interface InputConfig<T> extends ChangeableConfig<T> {
     placeholder?: StringOrSignal;
     accept?: StringOrSignal;
     onkeydown?: EventHandler<KeyboardEvent>;
+    debounce?: number;
 }
 
 export interface TextareaConfig extends ChangeableConfig<string> {
