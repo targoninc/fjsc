@@ -857,7 +857,7 @@ export class DomNode {
         return this;
     }
 
-    type(type: HtmlPropertyValue) {
+    type(type: StringOrSignal<InputType>) {
         this.wrapProperty('type', type);
         return this;
     }

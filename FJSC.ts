@@ -1,6 +1,6 @@
 import {computedSignal, create, ifjs, Signal, signal, signalMap} from "./f2.ts";
 import type {StringOrSignal, TypeOrSignal} from "./f2.ts";
-import type {
+import {
     ButtonConfig,
     BooleanConfig,
     ContainerConfig,
@@ -10,7 +10,7 @@ import type {
     SearchableSelectConfig,
     SelectOption,
     SelectOptionConfig,
-    TextConfig, TextareaConfig
+    TextConfig, TextareaConfig, InputType
 } from "./Types.ts";
 
 function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
@@ -46,6 +46,9 @@ export class FJSC {
         const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
         const touched = signal(false);
+        const isPassword = config.type === InputType.password;
+        const toggleState = signal(false);
+        const actualType = computedSignal<InputType>(toggleState, (t: boolean) => t ? InputType.text : config.type);
         let lastChange = 0;
         let debounceTimeout: number | undefined;
 
@@ -74,11 +77,14 @@ export class FJSC {
             }
         }
 
+        let value: Signal<T> = config.value as Signal<T>;
         if (config.value?.subscribe) {
             config.value.subscribe(validate);
             validate(config.value.value);
         } else {
             validate(config.value as T);
+            // @ts-ignore
+            value = signal<T>(config.value ?? "");
         }
 
         return create("div")
@@ -92,8 +98,8 @@ export class FJSC {
                         create("input")
                             .classes(invalidClass)
                             .applyGenericConfig(config)
-                            .type(config.type)
-                            .value(config.value)
+                            .type(actualType)
+                            .value(value)
                             .accept(config.accept ?? "")
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
@@ -123,8 +129,26 @@ export class FJSC {
                             .onkeydown(config.onkeydown ?? (() => {}))
                             .name(config.name)
                             .build(),
+                        ifjs(isPassword, FJSC.eyeButton(toggleState, () => {
+                            toggleState.value = !toggleState.value;
+                        })),
                     ).build(),
                 ifjs(hasError, FJSC.errorList(errors))
+            ).build();
+    }
+
+    static eyeButton(toggleState: Signal<boolean>, onClick: Function) {
+        const icon = computedSignal<string>(toggleState, (t: boolean) => t ? "visibility" : "visibility_off");
+
+        return create("div")
+            .classes("fjsc-eye-button")
+            .onclick(onClick)
+            .children(
+                FJSC.icon({
+                    icon,
+                    adaptive: true,
+                    isUrl: false,
+                })
             ).build();
     }
 

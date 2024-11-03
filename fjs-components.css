@@ -148,6 +148,10 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     color: var(--fjsc-interactive-color);
 }
 
+label.fjsc {
+    position: relative;
+}
+
 button.fjsc {
     height: max-content !important;
     border-bottom: 3px solid var(--fjsc-interactive-border);
@@ -361,4 +365,12 @@ input.invalid, textarea.invalid {
 
 .disabled * {
     pointer-events: none;
+}
+
+.fjsc-eye-button {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: pointer;
+    padding: var(--fjsc-input-padding-y) var(--fjsc-input-padding-x);
 }

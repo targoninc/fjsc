@@ -76,6 +76,12 @@ function example() {
                         required: true,
                         placeholder: "Some text yo",
                     }),
+                    FJSC.input({
+                        type: InputType.password,
+                        label: "Password please",
+                        required: true,
+                        placeholder: "mysecretpw",
+                    }),
                     FJSC.searchableSelect({
                         value: counter,
                         options: signal(options)
