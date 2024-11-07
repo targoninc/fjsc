@@ -192,7 +192,7 @@ export class FJSC {
                             .value(config.value)
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
-                            .attributes("autofocus", config.autofocus ?? "")
+                            .attributes("autofocus", config.autofocus ?? "", "rows", config.rows ?? "3")
                             .oninput((e: any) => {
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);

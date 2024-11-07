@@ -75,6 +75,7 @@ export interface TextareaConfig extends ChangeableConfig<string> {
     name: StringOrSignal;
     value: StringOrSignal;
     placeholder?: StringOrSignal;
+    rows?: TypeOrSignal<number>;
     resize?: "both" | "horizontal" | "vertical" | "none";
 }
 
