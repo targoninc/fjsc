@@ -349,7 +349,7 @@ input.fjsc-slider:checked ~ .fjsc-toggle-container .fjsc-toggle-slider {
     background: var(--fjsc-interactive-background);
 }
 
-input.invalid, textarea.invalid {
+input.invalid, textarea.invalid, button.invalid {
     border-color: var(--fjsc-error-color);
 }
 
