@@ -1,5 +1,5 @@
-export type StringOrSignal = string | Signal<string>;
 export type TypeOrSignal<T> = T | Signal<T>;
+export type StringOrSignal = TypeOrSignal<string | null>;
 export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Function;
 export type AnyElement = HTMLElement | SVGElement;
