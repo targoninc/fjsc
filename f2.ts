@@ -41,7 +41,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
+export function signalMap<T>(arrayState: Signal<T[] | Set<T>>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
     if (arrayState.constructor !== Signal) {
         throw new Error('Invalid argument type for signalMap. Must be a Signal.');
     }
