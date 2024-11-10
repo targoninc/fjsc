@@ -270,18 +270,19 @@ export class FJSC {
         const icon = config.icon;
         const isMaterial = !config.isUrl;
         const iconClass = config.adaptive ? "adaptive-icon" : "static-icon";
+        const pointerClass = config.title ? "_" : "no-pointer";
 
         if (isMaterial) {
             return create("i")
                 .applyGenericConfig(config)
-                .classes(iconClass, "material-symbols-outlined", "no-pointer")
+                .classes(iconClass, "material-symbols-outlined", pointerClass)
                 .text(icon)
                 .build();
         }
 
         return create("img")
             .applyGenericConfig(config)
-            .classes(iconClass, "no-pointer")
+            .classes(iconClass, pointerClass)
             .attributes("src", icon)
             .build();
     }
