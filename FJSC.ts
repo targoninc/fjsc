@@ -218,7 +218,7 @@ export class FJSC {
             ).build();
     }
 
-    static errorList(errors: Signal<string[]>) {
+    static errorList(errors: Signal<string[] | Set<string>>) {
         return signalMap(errors, create("div")
             .classes("flex-v", "fjsc", "fjsc-error-list"), (error: string) => FJSC.error(error));
     }
