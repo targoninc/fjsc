@@ -93,7 +93,7 @@ export class FJSC {
                 create("label")
                     .classes("flex-v", "fjsc", getDisabledClass(config))
                     .text(config.label ?? "")
-                    .for(config.name)
+                    .for(config.title)
                     .children(
                         create("input")
                             .classes(invalidClass)
