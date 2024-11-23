@@ -1,5 +1,5 @@
-export type StringOrSignal = string | Signal<string>;
 export type TypeOrSignal<T> = T | Signal<T>;
+export type StringOrSignal = TypeOrSignal<string | null>;
 export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
 export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Function;
 export type AnyElement = HTMLElement | SVGElement;
@@ -41,7 +41,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
+export function signalMap<T>(arrayState: Signal<T[] | Set<T>>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
     if (arrayState.constructor !== Signal) {
         throw new Error('Invalid argument type for signalMap. Must be a Signal.');
     }

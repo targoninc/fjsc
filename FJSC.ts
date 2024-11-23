@@ -93,7 +93,7 @@ export class FJSC {
                 create("label")
                     .classes("flex-v", "fjsc", getDisabledClass(config))
                     .text(config.label ?? "")
-                    .for(config.name)
+                    .for(config.title)
                     .children(
                         create("input")
                             .classes(invalidClass)
@@ -218,7 +218,7 @@ export class FJSC {
             ).build();
     }
 
-    static errorList(errors: Signal<string[]>) {
+    static errorList(errors: Signal<string[] | Set<string>>) {
         return signalMap(errors, create("div")
             .classes("flex-v", "fjsc", "fjsc-error-list"), (error: string) => FJSC.error(error));
     }
@@ -270,18 +270,19 @@ export class FJSC {
         const icon = config.icon;
         const isMaterial = !config.isUrl;
         const iconClass = config.adaptive ? "adaptive-icon" : "static-icon";
+        const pointerClass = config.title ? "_" : "no-pointer";
 
         if (isMaterial) {
             return create("i")
                 .applyGenericConfig(config)
-                .classes(iconClass, "material-symbols-outlined", "no-pointer")
+                .classes(iconClass, "material-symbols-outlined", pointerClass)
                 .text(icon)
                 .build();
         }
 
         return create("img")
             .applyGenericConfig(config)
-            .classes(iconClass, "no-pointer")
+            .classes(iconClass, pointerClass)
             .attributes("src", icon)
             .build();
     }

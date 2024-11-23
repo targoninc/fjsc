@@ -48,6 +48,7 @@
     --fjsc-interactive-color-active: var(--fjsc-primary-900);
     --fjsc-interactive-border: var(--fjsc-primary-700);
     --fjsc-interactive-border-focused: var(--fjsc-secondary-100);
+    --fjsc-interactive-border-active: var(--fjsc-secondary-300);
 
     --fjsc-input-padding-x: 0.75em;
     --fjsc-input-padding-y: 0.3em;
@@ -168,6 +169,7 @@ button.fjsc:hover, input.fjsc:hover, select.fjsc:hover, textarea.fjsc:hover {
 button.fjsc.active, input.fjsc.active, select.fjsc.active, textarea.fjsc.active {
     background: var(--fjsc-interactive-background-active);
     color: var(--fjsc-interactive-color-active);
+    border-color: var(--fjsc-interactive-border-active);
 }
 
 button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, textarea.fjsc:focus-visible {
