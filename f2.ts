@@ -12,8 +12,8 @@ type Replace<
 > = Omit<TypeToBeChecked, KeyToBeReplaced> & {
     [P in KeyToBeReplaced]: NewValueToUse
 }
-type omitted = Omit<CSSStyleDeclaration, "cssText" | "cssFloat">;
-export type SettableCss = Replace<omitted, Extract<keyof omitted, string>, StringOrSignal>;
+type omitted = Extract<keyof Omit<CSSStyleDeclaration, "cssText" | "cssFloat">, string>;
+export type SettableCss = Replace<omitted, keyof omitted, StringOrSignal>;
 
 export function create(tag: string) {
     return new DomNode(tag);
