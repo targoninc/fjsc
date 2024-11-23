@@ -812,8 +812,8 @@ export class DomNode {
         return this;
     }
 
-    css(css: string) {
-        this._node.style.cssText = css;
+    css(css: CSSStyleDeclaration) {
+        Object.assign(this._node.style, css);
         return this;
     }
 
