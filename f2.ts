@@ -5,15 +5,15 @@ export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Func
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
 export type AnyElementFactory = () => AnyElement;
-type Replace<
-    TypeToBeChecked,
-    KeyToBeReplaced extends keyof TypeToBeChecked,
-    NewValueToUse
-> = Omit<TypeToBeChecked, KeyToBeReplaced> & {
-    [P in KeyToBeReplaced]: NewValueToUse
-}
-type omitted = Extract<keyof Omit<CSSStyleDeclaration, "cssText" | "cssFloat">, string>;
-export type SettableCss = Replace<omitted, keyof omitted, StringOrSignal>;
+
+type propertyOmissions = Omit<CSSStyleDeclaration, "cssText" | "cssFloat">;
+type StringKeys<T> = {
+    [K in keyof T]: T[K] extends string ? K : never;
+}[keyof T];
+type stringProperties = StringKeys<propertyOmissions>;
+export type SettableCss = {
+    [K in stringProperties]: StringOrSignal
+};
 
 export function create(tag: string) {
     return new DomNode(tag);
