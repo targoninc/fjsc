@@ -812,7 +812,7 @@ export class DomNode {
         return this;
     }
 
-    css(css: CSSStyleDeclaration) {
+    css(css: Partial<CSSStyleDeclaration>) {
         Object.assign(this._node.style, css);
         return this;
     }
