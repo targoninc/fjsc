@@ -33,3 +33,10 @@ export const interactiveCss: CssClass = mergeCss(baseCss, {
     background: fjscVars.interactiveBackground,
     color: fjscVars.interactiveColor,
 });
+
+export const containerCss: CssClass = mergeCss(baseCss, {
+    background: fjscVars.containerBackground,
+    padding: `${fjscVars.containerPaddingY} ${fjscVars.containerPaddingX}`,
+    borderRadius: fjscVars.borderRadiusMedium,
+    border: `1px solid ${fjscVars.containerBorder}`,
+});

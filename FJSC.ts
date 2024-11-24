@@ -14,7 +14,15 @@ import type {
     TextConfig,
 } from "./Types.ts";
 import {InputType} from "./Types.ts";
-import {flexCss, flexVerticalCss, gapCss, interactiveCss, relativeCss} from "./fjscCssClasses.ts";
+import {
+    baseCss,
+    containerCss,
+    flexCss,
+    flexVerticalCss,
+    gapCss,
+    interactiveCss,
+    relativeCss
+} from "./fjscCssClasses.ts";
 import {fjscVars} from "./fjscVariables.ts";
 
 function getDisabledCss(config: { disabled?: TypeOrSignal<boolean> }): CssClass {
@@ -191,11 +199,9 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("fjsc")
             .css(flexVerticalCss)
             .children(
                 create("label")
-                    .classes("fjsc")
                     .css(flexVerticalCss)
                     .text(config.label ?? "")
                     .for(config.name)
@@ -264,7 +270,7 @@ export class FJSC {
 
         return create(config.tag ?? "div")
             .applyGenericConfig(config)
-            .classes("fjsc-container")
+            .css(containerCss)
             .children(...config.children)
             .build();
     }
@@ -279,6 +285,9 @@ export class FJSC {
     static heading(config: HeadingConfig) {
         return create(`h${config.level ?? 1}`)
             .applyGenericConfig(config)
+            .css(mergeCss(baseCss, {
+                fontSize: "2em"
+            }))
             .text(config.text)
             .build();
     }
@@ -451,15 +460,16 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v", "fjsc")
+            .css(flexVerticalCss)
             .children(
                 create("label")
                     .applyGenericConfig(config)
-                    .classes("fjsc-checkbox-container", invalidClass, getDisabledClass(config))
+                    .classes("fjsc-checkbox-container", invalidClass)
+                    .css(getDisabledCss(config))
                     .text(config.text)
                     .children(
                         create("input")
-                            .type("checkbox")
+                            .type(InputType.checkbox)
                             .name(config.name ?? "")
                             .id(config.name ?? "")
                             .required(config.required ?? false)

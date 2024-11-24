@@ -1,4 +1,5 @@
 import {InputType} from "./Types.ts";
+import {baseCss} from "./fjscCssClasses.ts";
 
 export type TypeOrSignal<T> = T | Signal<T>;
 export type StringOrSignal = TypeOrSignal<string | null>;
@@ -833,6 +834,9 @@ export class DomNode {
     }
 
     css(css: CssClass) {
+        if (!css) {
+            return this;
+        }
         for (const [key, value] of Object.entries(css as Record<string, StringOrSignal>)) {
             this.styles(key, value);
         }
