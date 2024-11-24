@@ -1,6 +1,6 @@
-import {computedSignal, create, ifjs, Signal, signal, signalMap} from "./f2.ts";
+import {computedSignal, create, ifjs, mergeCss, Signal, signal, signalMap} from "./f2.ts";
 import type {StringOrSignal, TypeOrSignal} from "./f2.ts";
-import {
+import type {
     ButtonConfig,
     BooleanConfig,
     ContainerConfig,
@@ -10,8 +10,11 @@ import {
     SearchableSelectConfig,
     SelectOption,
     SelectOptionConfig,
-    TextConfig, TextareaConfig, InputType
+    TextConfig,
+    TextareaConfig,
+    InputType
 } from "./Types.ts";
+import {interactiveCss} from "./fjscCssClasses.ts";
 
 function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
     let disabledClass;
@@ -28,6 +31,7 @@ function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
 export class FJSC {
     static button(config: ButtonConfig) {
         config.classes ??= [];
+        config.css = mergeCss(interactiveCss, config.css);
 
         return create("button")
             .classes(getDisabledClass(config))

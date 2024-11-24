@@ -14,6 +14,11 @@ type stringProperties = StringKeys<propertyOmissions>;
 export type SettableCss = {
     [K in stringProperties]: StringOrSignal
 };
+export type CssClass = Partial<SettableCss>;
+
+export function mergeCss(...cssObjs: (CssClass|undefined)[]): CssClass {
+    return Object.assign({}, ...cssObjs.filter(o => o));
+}
 
 export function create(tag: string) {
     return new DomNode(tag);
@@ -290,6 +295,7 @@ export class DomNode {
             .attributes(...(config.attributes ?? []))
             .styles(...(config.styles ?? []))
             .id(config.id)
+            .css(config.css)
             .title(config.title)
             .role(config.role);
     }
@@ -821,7 +827,7 @@ export class DomNode {
         return this;
     }
 
-    css(css: Partial<SettableCss>) {
+    css(css: CssClass) {
         for (const [key, value] of Object.entries(css as Record<string, StringOrSignal>)) {
             this.styles(key, value);
         }

@@ -1,5 +1,5 @@
 import {DomNode, Signal} from "./f2.ts";
-import type {EventHandler, StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
+import type {CssClass, EventHandler, StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
 
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
     ? Acc[number]
@@ -41,6 +41,7 @@ export interface BaseComponentConfig {
     tabindex?: HtmlPropertyValue;
     role?: HtmlPropertyValue;
     ariaLabel?: HtmlPropertyValue;
+    css?: CssClass;
 }
 
 export interface ButtonConfig extends BaseComponentConfig {
