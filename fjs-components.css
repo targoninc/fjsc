@@ -119,14 +119,6 @@ label.fjsc {
     font-size: 0.8em;
 }
 
-.fjsc {
-    font-family: var(--fjsc-font), sans-serif;
-    font-size: var(--fjsc-base-font-size);
-    border: none;
-    background: none;
-    color: var(--fjsc-text-color);
-}
-
 .fjsc-area {
     background: var(--fjsc-area-background);
     padding: var(--fjsc-area-padding-y) var(--fjsc-area-padding-x);
@@ -353,20 +345,6 @@ input.fjsc-slider:checked ~ .fjsc-toggle-container .fjsc-toggle-slider {
 
 input.invalid, textarea.invalid, button.invalid {
     border-color: var(--fjsc-error-color);
-}
-
-.fjsc-error {
-    color: var(--fjsc-error-color);
-    font-size: 0.9em;
-}
-
-.disabled {
-    opacity: .5;
-    pointer-events: none;
-}
-
-.disabled * {
-    pointer-events: none;
 }
 
 .fjsc-eye-button {

@@ -1,8 +1,8 @@
+import type {CssClass, StringOrSignal, TypeOrSignal} from "./f2.ts";
 import {computedSignal, create, ifjs, mergeCss, Signal, signal, signalMap} from "./f2.ts";
-import type {StringOrSignal, TypeOrSignal} from "./f2.ts";
 import type {
-    ButtonConfig,
     BooleanConfig,
+    ButtonConfig,
     ContainerConfig,
     HeadingConfig,
     IconConfig,
@@ -10,31 +10,39 @@ import type {
     SearchableSelectConfig,
     SelectOption,
     SelectOptionConfig,
-    TextConfig,
     TextareaConfig,
-    InputType
+    TextConfig,
 } from "./Types.ts";
-import {interactiveCss} from "./fjscCssClasses.ts";
+import {InputType} from "./Types.ts";
+import {flexCss, flexVerticalCss, gapCss, interactiveCss, relativeCss} from "./fjscCssClasses.ts";
+import {fjscVars} from "./fjscVariables.ts";
 
-function getDisabledClass(config: { disabled?: TypeOrSignal<boolean> }) {
-    let disabledClass;
+function getDisabledCss(config: { disabled?: TypeOrSignal<boolean> }): CssClass {
+    let pointerEvents: StringOrSignal, opacity: StringOrSignal;
     if (config.disabled?.subscribe) {
-        disabledClass = computedSignal<string>(config.disabled as Signal<boolean>, (newValue: boolean) =>
-            newValue ? "disabled" : "enabled");
+        pointerEvents = signal("initial");
+        opacity = signal("1");
+        config.disabled.subscribe((newVal: boolean) => {
+            pointerEvents!.value = newVal ? "none" : "initial";
+            opacity!.value = newVal ? ".5" : "1";
+        })
     } else {
-        disabledClass = config.disabled ? "disabled" : "enabled";
+        pointerEvents = config.disabled ? "none" : "initial";
+        opacity = config.disabled ? ".5" : "1";
     }
 
-    return disabledClass;
+    return {
+        opacity,
+        pointerEvents
+    };
 }
 
 export class FJSC {
     static button(config: ButtonConfig) {
         config.classes ??= [];
-        config.css = mergeCss(interactiveCss, config.css);
+        config.css = mergeCss(interactiveCss, getDisabledCss(config), config.css);
 
         return create("button")
-            .classes(getDisabledClass(config))
             .applyGenericConfig(config)
             .onclick(config.onclick)
             .children(
@@ -90,12 +98,13 @@ export class FJSC {
             // @ts-ignore
             value = signal<T>(config.value ?? "");
         }
+        config.css = mergeCss(getDisabledCss(config), config.css);
 
         return create("div")
-            .classes("flex-v", "fjsc")
+            .css(flexVerticalCss)
             .children(
                 create("label")
-                    .classes("flex-v", "fjsc", getDisabledClass(config))
+                    .css(flexVerticalCss)
                     .text(config.label ?? "")
                     .for(config.title)
                     .children(
@@ -182,10 +191,12 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v", "fjsc")
+            .classes("fjsc")
+            .css(flexVerticalCss)
             .children(
                 create("label")
-                    .classes("flex-v", "fjsc", getDisabledClass(config))
+                    .classes("fjsc")
+                    .css(flexVerticalCss)
                     .text(config.label ?? "")
                     .for(config.name)
                     .children(
@@ -223,13 +234,15 @@ export class FJSC {
     }
 
     static errorList(errors: Signal<string[] | Set<string>>) {
-        return signalMap(errors, create("div")
-            .classes("flex-v", "fjsc", "fjsc-error-list"), (error: string) => FJSC.error(error));
+        return signalMap(errors, create("div").css(flexVerticalCss), FJSC.error);
     }
 
     static error(error: StringOrSignal) {
         return create("span")
-            .classes("fjsc-error")
+            .css({
+                color: fjscVars.errorColor,
+                fontSize: "0.9em"
+            })
             .text(error)
             .build();
     }
@@ -316,13 +329,16 @@ export class FJSC {
 
         return create("div")
             .applyGenericConfig(config)
-            .classes("fjsc-search-select", "flex-v", "relative")
+            .classes("fjsc-search-select")
+            .css(mergeCss(flexVerticalCss, relativeCss))
             .children(
                 create("div")
-                    .classes("flex", "fjsc-search-select-visible", "fjsc")
+                    .classes("fjsc-search-select-visible", "fjsc")
+                    .css(flexCss)
                     .children(
                         create("input")
-                            .classes("fjsc", "fjsc-search-select-input", getDisabledClass(config))
+                            .classes("fjsc", "fjsc-search-select-input")
+                            .css(getDisabledCss(config))
                             .value(search)
                             .onfocus(() => {
                                 optionsVisible.value = true;
@@ -363,7 +379,8 @@ export class FJSC {
                             })
                             .build(),
                         create("div")
-                            .classes("fjsc-search-select-dropdown", getDisabledClass(config))
+                            .classes("fjsc-search-select-dropdown")
+                            .css(getDisabledCss(config))
                             .onclick(() => {
                                 optionsVisible.value = !optionsVisible.value;
                             })
@@ -388,7 +405,8 @@ export class FJSC {
         });
 
         element = create("div")
-            .classes("fjsc-search-select-option", "flex", "gap", "padded", selectedClass)
+            .classes("fjsc-search-select-option", "gap", "padded", selectedClass)
+            .css(mergeCss(gapCss, flexCss))
             .onclick(() => {
                 config.value.value = config.option.id;
                 config.search.value = config.option.name;
@@ -498,11 +516,12 @@ export class FJSC {
             .children(
                 create("label")
                     .applyGenericConfig(config)
-                    .classes("flex", "gap", "align-children", invalidClass, getDisabledClass(config))
+                    .classes("align-children", invalidClass)
+                    .css(mergeCss(flexCss, gapCss, getDisabledCss(config)))
                     .for(config.name ?? "")
                     .children(
                         create("input")
-                            .type("checkbox")
+                            .type(InputType.checkbox)
                             .classes("hidden", "fjsc-slider")
                             .id(config.name ?? "")
                             .required(config.required ?? false)

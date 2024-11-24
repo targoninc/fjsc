@@ -1,6 +1,8 @@
+import {InputType} from "./Types.ts";
+
 export type TypeOrSignal<T> = T | Signal<T>;
 export type StringOrSignal = TypeOrSignal<string | null>;
-export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null>;
+export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null | undefined>;
 export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Function;
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
@@ -60,19 +62,20 @@ export function signalMap<T>(arrayState: Signal<T[] | Set<T>>, wrapper: DomNode,
         throw new Error('Invalid argument type for signalMap. Must be a Signal.');
     }
 
-    const update = (newValue: T[]) => {
+    const update = (newValue: T[] | Set<T>) => {
         if (!newValue) {
             return;
         }
+        const tmp = [...newValue];
         const children = [];
         if (renderSequentially) {
             wrapper.overwriteChildren();
-            for (let i = 0; i < newValue.length; i++) {
-                wrapper.children(callback(newValue[i], i));
+            for (let i = 0; i < tmp.length; i++) {
+                wrapper.children(callback(tmp[i], i));
             }
         } else {
-            for (let i = 0; i < newValue.length; i++) {
-                children.push(callback(newValue[i], i));
+            for (let i = 0; i < tmp.length; i++) {
+                children.push(callback(tmp[i], i));
             }
             // @ts-ignore
             wrapper.overwriteChildren(...children);
@@ -318,8 +321,10 @@ export class DomNode {
                 this._node[property] = newValue;
             });
         } else {
-            // @ts-ignore
-            this._node[property] = value;
+            if (value !== undefined && value !== null) {
+                // @ts-ignore
+                this._node[property] = value;
+            }
         }
     }
 
@@ -874,7 +879,7 @@ export class DomNode {
         return this;
     }
 
-    type(type: StringOrSignal<InputType>) {
+    type(type: TypeOrSignal<InputType>) {
         this.wrapProperty('type', type);
         return this;
     }
