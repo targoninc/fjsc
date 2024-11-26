@@ -1,5 +1,5 @@
 import {InputType} from "./Types.ts";
-import {baseCss} from "./fjscCssClasses.ts";
+import {signal, Signal} from "./signals.ts";
 
 export type TypeOrSignal<T> = T | Signal<T>;
 export type StringOrSignal = TypeOrSignal<string | null>;
@@ -25,10 +25,6 @@ export function mergeCss(...cssObjs: (CssClass|undefined)[]): CssClass {
 
 export function create(tag: string) {
     return new DomNode(tag);
-}
-
-export function signal<T>(initialValue: T) {
-    return new Signal<T>(initialValue);
 }
 
 export function nullElement() {
@@ -119,164 +115,6 @@ export function stack(message: string, debugInfo = {}) {
     console.warn(message, { debugInfo }, (new Error()).stack);
 }
 
-export class TypeHelper {
-    static assertString(value: any, valueName = 'value') {
-        const result = value.constructor === String;
-        if (!result) {
-            console.log('TypeHelper.isString: value is not a string for ' + valueName + ': ', value);
-        }
-        return result;
-    }
-
-    static assertFunction(value: any, valueName = 'value') {
-        const result = value.constructor === Function;
-        if (!result) {
-            console.log('TypeHelper.isFunction: value is not a function for ' + valueName + ': ', value);
-        }
-        return result;
-    }
-}
-
-export class FjsStore {
-    static keyName = "__fjs_store__";
-
-    static get(key: string) {
-        // @ts-ignore
-        return window[this.keyName][key];
-    }
-
-    static set(key: any, value: any) {
-        // @ts-ignore
-        window[this.keyName][key] = value;
-    }
-
-    static clear() {
-        // @ts-ignore
-        window[this.keyName] = {};
-    }
-
-    static remove(key: any) {
-        // @ts-ignore
-        delete window[this.keyName][key];
-    }
-
-    static getAll() {
-        // @ts-ignore
-        return window[this.keyName];
-    }
-
-    static keys() {
-        // @ts-ignore
-        return Object.keys(window[this.keyName]);
-    }
-
-    static values() {
-        // @ts-ignore
-        return Object.values(window[this.keyName]);
-    }
-
-    static getSignalValue(key: any) {
-        return this.get(key).value;
-    }
-
-    static setSignalValue(key: any, value: any) {
-        this.get(key).value = value;
-    }
-}
-
-/**
- * If called with one argument, gets the value for that key, otherwise saves it to the store.
- * @param key
- * @param value
- * @returns {*|void}
- */
-export function store(key = null, value = null) {
-    // @ts-ignore
-    if (!window[FjsStore.keyName]) {
-        // @ts-ignore
-        window[FjsStore.keyName] = {};
-    }
-    if (arguments.length === 1) {
-        return FjsStore.get(arguments[0]);
-    } else if (arguments.length === 2) {
-        return FjsStore.set(arguments[0], arguments[1]);
-    }
-
-    throw new Error("Passing more than 2 arguments to store() is not supported.");
-}
-
-export interface BoolValueAssignments<T> {
-    [key: string]: {
-        onTrue: T,
-        onFalse: T,
-    }
-}
-
-export class Signal<T> {
-    _callbacks: Function[] = [];
-    _value: T;
-    _values: { [key: string]: Signal<T> } = {};
-
-    constructor(initialValue: T, updateCallback: Function = () => {
-    }, key = null) {
-        this._value = initialValue;
-        this._values = {};
-        this._callbacks.push(updateCallback);
-        if (key) {
-            store().set(key, this);
-        }
-    }
-
-    /**
-     * Creates an object with boolean signals that update when {this} updates.
-     * @param assignments {Object} e.g. { someKey: { onTrue: value1, onFalse: value2 } }
-     */
-    boolValues(assignments: BoolValueAssignments<T> = {}) {
-        for (let key in assignments) {
-            this._values[key] = signal<T>(this._value ? assignments[key].onTrue : assignments[key].onFalse);
-        }
-        this.subscribe((newValue: T) => {
-            for (let key in assignments) {
-                this._values[key].value = newValue ? assignments[key].onTrue : assignments[key].onFalse;
-            }
-        });
-        return this._values;
-    }
-
-    unsubscribeAll() {
-        this._callbacks = [];
-    }
-
-    subscribe(callback: Function) {
-        this._callbacks.push(callback);
-    }
-
-    unsubscribe(callback: Function) {
-        const index = this._callbacks.indexOf(callback);
-        if (index >= 0) {
-            this._callbacks.splice(index, 1);
-        }
-    }
-
-    get onUpdate(): Function[] {
-        return this._callbacks;
-    }
-
-    set onUpdate(callback: Function) {
-        this._callbacks.push(callback);
-    }
-
-    get value(): T {
-        return this._value;
-    }
-
-    set value(value: T) {
-        const changed = this._value !== value;
-        this._value = value;
-        this._callbacks.forEach(callback => callback(value, changed));
-    }
-}
-
 export function isValidElement(element: any) {
     const validTypes = [HTMLElement, SVGElement];
     return validTypes.some(type => element instanceof type);
@@ -359,7 +197,6 @@ export class DomNode {
             for (let i = 0; i < arguments.length; i += 2) {
                 const key = arguments[i];
                 const value = arguments[i + 1];
-                TypeHelper.assertString(key, 'attributes/key');
                 if (value && value.constructor === Signal) {
                     this._node.setAttribute(key, value.value);
                     value.onUpdate = (newValue: string) => {
