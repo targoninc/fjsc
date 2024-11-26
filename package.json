@@ -1,22 +1,27 @@
 {
-  "name": "fjsc",
+  "name": "@targoninc/fjsc",
   "module": "src/FJSC.ts",
+  "version": "1.0.0",
   "type": "module",
   "main": "src/FJSC.ts",
-  "author": {
-    "email": "alex@targoninc.com",
-    "name": "Alexander Fritsch",
-    "url": "https://targoninc.com"
-  },
+  "author": "Alexander Fritsch <alex@targoninc.com> (https://targoninc.com)",
   "scripts": {
     "minify": "bun build src/FJSC.ts --sourcemap=linked --minify",
     "minify-watch": "bun build src/FJSC.ts --watch --sourcemap=linked --minify",
-    "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"  },
-    "create-project": "bun create-project.ts",
+    "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"
+  },
+  "create-project": "bun create-project.ts",
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
-  }
+  },
+  "description": "FJSC is a library containing a set of components that can be used to build web applications.",
+  "dependencies": {
+    "bun-types": "^1.1.30",
+    "typescript": "^5.6.3",
+    "undici-types": "^5.26.5"
+  },
+  "license": "ISC"
 }
