@@ -1,7 +1,7 @@
 {
   "name": "@targoninc/fjsc",
   "module": "src/FJSC.ts",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
   "main": "src/FJSC.ts",
   "author": "Alexander Fritsch <alex@targoninc.com> (https://targoninc.com)",
@@ -21,10 +21,6 @@
     "bun-types": "^1.1.30",
     "typescript": "^5.6.3",
     "undici-types": "^5.26.5"
-  },
-  "exports": "./create-project.js",
-  "bin": {
-    "create-project": "./create-project.js"
   },
   "license": "ISC"
 }
