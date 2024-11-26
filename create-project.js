@@ -1,19 +1,14 @@
 import * as fs from "node:fs";
 import { execSync } from "node:child_process";
-import * as path from "node:path"; // Ensure @types/node is added to dependencies
+import * as path from "node:path";
 
-interface ProjectArgs {
-    folder: string;
-    projectName?: string;
-}
-
-const args: ProjectArgs = {
+const args = {
     folder: process.argv[2] || ".",
     projectName: process.argv[3] || "my-project",
 };
 
 // Logging function
-const log = (message: string) => {
+const log = (message) => {
     console.log(`[LOG] ${message}`);
 };
 
@@ -32,9 +27,10 @@ log(`Changed working directory to ${process.cwd()}`);
 
 // Set the project name (if provided)
 fs.writeFileSync(
-    "package.json",
+    args.folder + "/package.json",
     JSON.stringify({
         name: args.projectName,
+        version: "1.0.0",
     }, null, 2)
 );
 log(`Created package.json with project name: ${args.projectName}`);
