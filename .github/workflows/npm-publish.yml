@@ -1,0 +1,54 @@
+name: Bun Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install Bun
+        uses: jarred-sumner/setup-bun@v1
+        with:
+          version: 'latest'
+      - name: Install dependencies
+        run: bun install
+      - name: Verify Bun package version
+        run: |
+          PACKAGE_VERSION=$(bun show @targoninc/fjsc version)
+          if [ "${PACKAGE_VERSION}" == "$(jq -r .version package.json)" ]; then
+            echo "Package version already matches the version in package.json, skipping publish and aborting workflow..."
+            exit 1
+          else
+            echo "Package version does not match the version in package.json, publishing..."
+          fi
+  build:
+    needs: check_version
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Bun
+        uses: jarred-sumner/setup-bun@v1
+        with:
+          version: 'latest'
+      - run: bun install
+
+  publish-npm:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Bun
+        uses: jarred-sumner/setup-bun@v1
+        with:
+          version: 'latest'
+          registry-url: https://registry.npmjs.org/
+      - run: bun install
+      - run: bun publish
+        name: Publish on NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}

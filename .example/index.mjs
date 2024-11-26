@@ -1,6 +1,6 @@
 import {FJSC} from "../FJSC.js";
-import {computedSignal, signal} from "../f2.js";
-import {InputType} from "../Types.js";
+import {computedSignal, signal} from "../src/f2.ts";
+import {InputType} from "../src/Types.ts";
 
 const options = [
     {

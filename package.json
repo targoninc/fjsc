@@ -1,12 +1,18 @@
 {
   "name": "fjsc",
-  "module": "FJSC.ts",
+  "module": "src/FJSC.ts",
   "type": "module",
-  "main": "FJSC.ts",
+  "main": "src/FJSC.ts",
+  "author": {
+    "email": "alex@targoninc.com",
+    "name": "Alexander Fritsch",
+    "url": "https://targoninc.com"
+  },
   "scripts": {
-    "minify": "bun build ./FJSC.ts --sourcemap=linked --minify",
-    "minify-watch": "bun build ./FJSC.ts --watch --sourcemap=linked --minify",
+    "minify": "bun build src/FJSC.ts --sourcemap=linked --minify",
+    "minify-watch": "bun build src/FJSC.ts --watch --sourcemap=linked --minify",
     "run-example": "bun build ./.example/index.mjs --sourcemap=linked --outdir=./example-bundled --watch"  },
+    "create-project": "bun create-project.ts",
   "devDependencies": {
     "@types/bun": "latest"
   },
