@@ -63,7 +63,7 @@ export class FJSC {
     }
 
     static input<T>(config: InputConfig<T>) {
-        const errors = signal<Iterable<string>>([]);
+        const errors = signal<string[]>([]);
         const hasError = compute((e) => [...e].length > 0, errors);
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
         const touched = signal(false);
@@ -176,8 +176,8 @@ export class FJSC {
     }
 
     static textarea(config: TextareaConfig) {
-        const errors = signal<Iterable<string>>([]);
-        const hasError = compute((e) => [...e].length > 0, errors);
+        const errors = signal<string[]>([]);
+        const hasError = compute((e) => e.length > 0, errors);
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: any) {
@@ -241,7 +241,7 @@ export class FJSC {
             ).build();
     }
 
-    static errorList(errors: Signal<Iterable<string>>) {
+    static errorList(errors: Signal<string[]>) {
         return signalMap(errors, create("div").css(flexVerticalCss), FJSC.error);
     }
 
@@ -403,7 +403,7 @@ export class FJSC {
                                 })
                             ).build()
                     ).build(),
-                ifjs(optionsVisible, signalMap(filtered as Signal<Iterable<SelectOption>>, create("div").classes("fjsc-search-select-options", "flex-v"), (option: SelectOption) =>
+                ifjs(optionsVisible, signalMap(filtered, create("div").classes("fjsc-search-select-options", "flex-v"), (option: SelectOption) =>
                     FJSC.searchSelectOption({option, value, search, optionsVisible, selectedId})))
             ).build();
     }
@@ -437,8 +437,8 @@ export class FJSC {
     }
 
     static checkbox(config: BooleanConfig) {
-        const errors = signal<Iterable<string>>([]);
-        const hasError = compute((e: string[]) => e.length > 0, errors);
+        const errors = signal<string[]>([]);
+        const hasError = compute((e) => e.length > 0, errors);
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: boolean) {
@@ -503,8 +503,8 @@ export class FJSC {
     }
 
     static toggle(config: BooleanConfig) {
-        const errors = signal<Iterable<string>>([]);
-        const hasError = compute((e) => [...e].length > 0, errors);
+        const errors = signal<string[]>([]);
+        const hasError = compute((e) => e.length > 0, errors);
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: boolean) {

@@ -54,7 +54,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-export function signalMap<T>(arrayState: Signal<Iterable<T>>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
+export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
     if (!arrayState.subscribe) {
         throw new Error("arrayState argument for signalMap is not subscribable");
     }
@@ -93,15 +93,19 @@ export function isValidElement(element: any) {
     return validTypes.some(type => element instanceof type);
 }
 
+type AnyElementWithKeyIndex = AnyElement & {
+    [key: string]: HtmlPropertyValue
+};
+
 export class DomNode {
-    _node: AnyElement;
+    _node: AnyElementWithKeyIndex;
     svgTags = ['svg', 'g', 'circle', 'ellipse', 'line', 'path', 'polygon', 'polyline', 'rect', 'text', 'textPath', 'tspan'];
 
     constructor(tag: string) {
         if (this.svgTags.includes(tag)) {
-            this._node = document.createElementNS("http://www.w3.org/2000/svg", tag);
+            this._node = document.createElementNS("http://www.w3.org/2000/svg", tag) as AnyElementWithKeyIndex;
         } else {
-            this._node = document.createElement(tag);
+            this._node = document.createElement(tag) as AnyElementWithKeyIndex;
         }
     }
 
@@ -123,18 +127,14 @@ export class DomNode {
     }
 
     wrapProperty(property: string, value: HtmlPropertyValue) {
-        // @ts-ignore
-        if (value && value.subscribe) {
-            // @ts-ignore
-            this._node[property] = value.value;
-            // @ts-ignore
-            value.subscribe((newValue: HtmlPropertyValue) => {
-                // @ts-ignore
+        if (value && value.constructor === Signal) {
+            const sig = value as Signal<string>;
+            this._node[property] = sig.value;
+            sig.subscribe((newValue: HtmlPropertyValue) => {
                 this._node[property] = newValue;
             });
         } else {
             if (value !== undefined && value !== null) {
-                // @ts-ignore
                 this._node[property] = value;
             }
         }
@@ -147,13 +147,14 @@ export class DomNode {
     classes(...classes: StringOrSignal[]) {
         for (let cls of classes) {
             if (cls && cls.constructor === Signal) {
-                let previousValue = cls.value as string;
+                const sig = cls as Signal<string>;
+                let previousValue = sig.value as string;
                 this._node.classList.add(previousValue);
-                cls.onUpdate = (newValue: string) => {
+                sig.subscribe((newValue: string) => {
                     this._node.classList.remove(previousValue);
                     this._node.classList.add(newValue);
                     previousValue = newValue;
-                };
+                });
             } else {
                 this._node.classList.add(cls as string);
             }
