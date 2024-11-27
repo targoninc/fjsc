@@ -1,5 +1,5 @@
 import type {AnyElement, CssClass, StringOrSignal, TypeOrSignal} from "./f2.ts";
-import {computedSignal, create, ifjs, mergeCss, signalMap} from "./f2.ts";
+import {create, ifjs, mergeCss, signalMap} from "./f2.ts";
 import type {
     BooleanConfig,
     ButtonConfig,
@@ -64,12 +64,13 @@ export class FJSC {
 
     static input<T>(config: InputConfig<T>) {
         const errors = signal<Iterable<string>>([]);
-        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
-        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+        const hasError = compute((e) => [...e].length > 0, errors);
+        const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
         const touched = signal(false);
         const isPassword = config.type === InputType.password;
         const toggleState = signal(false);
-        const actualType = computedSignal<InputType>(toggleState, (t: boolean) => t ? InputType.text : config.type);
+        const configTypeSignal = config.type.constructor === Signal ? config.type as Signal<InputType> : signal(config.type as InputType);
+        const actualType = compute((t: boolean) => t ? InputType.text : configTypeSignal.value, toggleState);
         let lastChange = 0;
         let debounceTimeout: number | Timer | undefined;
 
@@ -176,7 +177,7 @@ export class FJSC {
 
     static textarea(config: TextareaConfig) {
         const errors = signal<Iterable<string>>([]);
-        const hasError = compute((e: string[]) => e.length > 0, errors);
+        const hasError = compute((e) => [...e].length > 0, errors);
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: any) {
@@ -335,7 +336,7 @@ export class FJSC {
         selectedIndex.subscribe(updateSelectedId);
         filtered.subscribe(updateSelectedId);
         updateSelectedId();
-        const currentIcon = computedSignal(optionsVisible, (vis: boolean) => vis ? "arrow_drop_up" : "arrow_drop_down");
+        const currentIcon = compute((vis: boolean): string => vis ? "arrow_drop_up" : "arrow_drop_down", optionsVisible);
 
         return create("div")
             .applyGenericConfig(config)
@@ -503,8 +504,8 @@ export class FJSC {
 
     static toggle(config: BooleanConfig) {
         const errors = signal<Iterable<string>>([]);
-        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
-        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+        const hasError = compute((e) => [...e].length > 0, errors);
+        const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: boolean) {
             errors.value = [];

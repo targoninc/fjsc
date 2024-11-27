@@ -84,33 +84,6 @@ export function signalMap<T>(arrayState: Signal<Iterable<T>>, wrapper: DomNode, 
     return wrapper.build();
 }
 
-/**
- * Short wrapper to make dependent signals easier.
- * @param sourceSignal {Signal} Whenever the source signal is updated, the updateMethod gets called to update the output signal.
- * @param updateMethod {Function} Should return the value to update the output signal with.
- */
-export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function): Signal<T> {
-    const returnSignal = signal<T>(updateMethod(sourceSignal.value));
-    sourceSignal.subscribe((newVal: (T)) => {
-        try {
-            returnSignal.value = updateMethod(newVal);
-        } catch (e) {
-            // @ts-ignore
-            returnSignal.value = null;
-        }
-    });
-    return returnSignal;
-}
-
-export function signalFromProperty(sourceSignal: Signal<any>, propertyName: string) {
-    return computedSignal(sourceSignal, (source: any) => {
-        if (!source) {
-            return null;
-        }
-        return source[propertyName];
-    });
-}
-
 export function stack(message: string, debugInfo = {}) {
     console.warn(message, { debugInfo }, (new Error()).stack);
 }
@@ -721,6 +694,7 @@ export class DomNode {
     }
 
     type(type: TypeOrSignal<InputType>) {
+        // @ts-ignore
         this.wrapProperty('type', type);
         return this;
     }

@@ -113,3 +113,36 @@ export async function asyncCompute<T, Args extends any[]>(
     }
     return out;
 }
+
+/**
+ * Short wrapper to make dependent signals easier.
+ * @deprecated Use compute() instead
+ * @param sourceSignal {Signal} Whenever the source signal is updated, the updateMethod gets called to update the output signal.
+ * @param updateMethod {Function} Should return the value to update the output signal with.
+ */
+export function computedSignal<T>(sourceSignal: Signal<any>, updateMethod: Function): Signal<T> {
+    const returnSignal = signal<T>(updateMethod(sourceSignal.value));
+    sourceSignal.subscribe((newVal: (T)) => {
+        try {
+            returnSignal.value = updateMethod(newVal);
+        } catch (e) {
+            // @ts-ignore
+            returnSignal.value = null;
+        }
+    });
+    return returnSignal;
+}
+
+/**
+ * @deprecated Use compute() instead
+ * @param sourceSignal
+ * @param propertyName
+ */
+export function signalFromProperty(sourceSignal: Signal<any>, propertyName: string) {
+    return compute((source: any) => {
+        if (!source) {
+            return null;
+        }
+        return source[propertyName];
+    }, sourceSignal);
+}
