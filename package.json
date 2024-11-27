@@ -1,7 +1,7 @@
 {
   "name": "@targoninc/fjsc",
   "module": "src/FJSC.ts",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "main": "src/FJSC.ts",
   "author": "Alexander Fritsch <alex@targoninc.com> (https://targoninc.com)",
