@@ -2,8 +2,8 @@ import {InputType} from "./Types.ts";
 import {signal, Signal} from "./signals.ts";
 
 export type TypeOrSignal<T> = T | Signal<T>;
-export type StringOrSignal = TypeOrSignal<string | null>;
-export type HtmlPropertyValue = TypeOrSignal<string | number | boolean | null | undefined>;
+export type StringOrSignal = TypeOrSignal<string>;
+export type HtmlPropertyValue = StringOrSignal | TypeOrSignal<number | boolean | null | undefined>;
 export type EventHandler<T> = ((this: GlobalEventHandlers, ev: T) => any) | Function;
 export type AnyElement = HTMLElement | SVGElement;
 export type AnyNode = DomNode | AnyElement;
@@ -54,12 +54,12 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-export function signalMap<T>(arrayState: Signal<T[] | Set<T>>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
-    if (arrayState.constructor !== Signal) {
-        throw new Error('Invalid argument type for signalMap. Must be a Signal.');
+export function signalMap<T>(arrayState: Signal<Iterable<T>>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
+    if (!arrayState.subscribe) {
+        throw new Error("arrayState argument for signalMap is not subscribable");
     }
 
-    const update = (newValue: T[] | Set<T>) => {
+    const update = (newValue: Iterable<T>) => {
         if (!newValue) {
             return;
         }
@@ -171,7 +171,7 @@ export class DomNode {
         return this.classes(className);
     }
 
-    classes(...classes: HtmlPropertyValue[]) {
+    classes(...classes: StringOrSignal[]) {
         for (let cls of classes) {
             if (cls && cls.constructor === Signal) {
                 let previousValue = cls.value as string;
@@ -232,7 +232,7 @@ export class DomNode {
         return this;
     }
 
-    children(...children: (TypeOrSignal<AnyNode>|null)[]) {
+    children(...children: (TypeOrSignal<DomNode>|TypeOrSignal<AnyElement>|TypeOrSignal<AnyNode>|null)[]) {
         for (let node of arguments) {
             if (isValidElement(node)) {
                 this._node.appendChild(node);

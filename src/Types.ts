@@ -1,5 +1,6 @@
-import {DomNode, Signal} from "./f2.ts";
+import {DomNode} from "./f2.ts";
 import type {CssClass, EventHandler, StringOrSignal, TypeOrSignal, HtmlPropertyValue} from "./f2.ts";
+import {Signal} from "./signals.ts";
 
 type Enumerate<N extends number, Acc extends number[] = []> = Acc['length'] extends N
     ? Acc[number]

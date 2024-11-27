@@ -1,5 +1,5 @@
-import type {CssClass, StringOrSignal, TypeOrSignal} from "./f2.ts";
-import {computedSignal, create, ifjs, mergeCss, Signal, signal, signalMap} from "./f2.ts";
+import type {AnyElement, CssClass, StringOrSignal, TypeOrSignal} from "./f2.ts";
+import {computedSignal, create, ifjs, mergeCss, signalMap} from "./f2.ts";
 import type {
     BooleanConfig,
     ButtonConfig,
@@ -24,6 +24,7 @@ import {
     relativeCss
 } from "./fjscCssClasses.ts";
 import {fjscVars} from "./fjscVariables.ts";
+import {compute, Signal, signal} from "./signals.ts";
 
 function getDisabledCss(config: { disabled?: TypeOrSignal<boolean> }): CssClass {
     let pointerEvents: StringOrSignal, opacity: StringOrSignal;
@@ -62,7 +63,7 @@ export class FJSC {
     }
 
     static input<T>(config: InputConfig<T>) {
-        const errors = signal<string[]>([]);
+        const errors = signal<Iterable<string>>([]);
         const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
         const touched = signal(false);
@@ -70,7 +71,7 @@ export class FJSC {
         const toggleState = signal(false);
         const actualType = computedSignal<InputType>(toggleState, (t: boolean) => t ? InputType.text : config.type);
         let lastChange = 0;
-        let debounceTimeout: number | undefined;
+        let debounceTimeout: number | Timer | undefined;
 
         function validate(newValue: any) {
             errors.value = [];
@@ -158,8 +159,8 @@ export class FJSC {
             ).build();
     }
 
-    static eyeButton(toggleState: Signal<boolean>, onClick: Function) {
-        const icon = computedSignal<string>(toggleState, (t: boolean) => t ? "visibility" : "visibility_off");
+    static eyeButton(toggleState: Signal<boolean>, onClick: Function): AnyElement {
+        const icon = compute((t: boolean): string => t ? "visibility" : "visibility_off", toggleState);
 
         return create("div")
             .classes("fjsc-eye-button")
@@ -174,9 +175,9 @@ export class FJSC {
     }
 
     static textarea(config: TextareaConfig) {
-        const errors = signal<string[]>([]);
-        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
-        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+        const errors = signal<Iterable<string>>([]);
+        const hasError = compute((e: string[]) => e.length > 0, errors);
+        const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: any) {
             errors.value = [];
@@ -213,7 +214,7 @@ export class FJSC {
                             .value(config.value)
                             .required(config.required ?? false)
                             .placeholder(config.placeholder ?? "")
-                            .attributes("autofocus", config.autofocus ?? "", "rows", config.rows ?? "3")
+                            .attributes("autofocus", config.autofocus ?? "", "rows", config.rows?.toString() ?? "3")
                             .oninput((e: any) => {
                                 if (!config.value?.subscribe) {
                                     validate(e.target.value);
@@ -239,7 +240,7 @@ export class FJSC {
             ).build();
     }
 
-    static errorList(errors: Signal<string[] | Set<string>>) {
+    static errorList(errors: Signal<Iterable<string>>) {
         return signalMap(errors, create("div").css(flexVerticalCss), FJSC.error);
     }
 
@@ -401,17 +402,17 @@ export class FJSC {
                                 })
                             ).build()
                     ).build(),
-                ifjs(optionsVisible, signalMap(filtered, create("div").classes("fjsc-search-select-options", "flex-v"), (option: SelectOption) =>
+                ifjs(optionsVisible, signalMap(filtered as Signal<Iterable<SelectOption>>, create("div").classes("fjsc-search-select-options", "flex-v"), (option: SelectOption) =>
                     FJSC.searchSelectOption({option, value, search, optionsVisible, selectedId})))
             ).build();
     }
 
     static searchSelectOption(config: SelectOptionConfig) {
         let element: any;
-        const selectedClass = computedSignal<string>(config.selectedId, (id: string) => {
+        const selectedClass = compute((id: string): string => {
             element?.scrollIntoView({behavior: "smooth", block: "nearest"});
             return id === config.option.id ? "selected" : "_";
-        });
+        }, config.selectedId);
 
         element = create("div")
             .classes("fjsc-search-select-option", "gap", "padded", selectedClass)
@@ -435,9 +436,9 @@ export class FJSC {
     }
 
     static checkbox(config: BooleanConfig) {
-        const errors = signal<string[]>([]);
-        const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
-        const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
+        const errors = signal<Iterable<string>>([]);
+        const hasError = compute((e: string[]) => e.length > 0, errors);
+        const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
 
         function validate(newValue: boolean) {
             errors.value = [];
@@ -452,11 +453,15 @@ export class FJSC {
             }
         }
 
-        if (config.checked.subscribe) {
-            config.checked.subscribe(validate);
-            validate(config.checked.value);
+        let checked: StringOrSignal;
+        if (config.checked && config.checked.subscribe) {
+            const sig = config.checked as Signal<boolean>;
+            sig.subscribe(validate);
+            validate(sig.value);
+            checked = compute(c => c.toString(), sig);
         } else {
             validate(config.checked as boolean);
+            checked = config.checked.toString();
         }
 
         return create("div")
@@ -473,7 +478,7 @@ export class FJSC {
                             .name(config.name ?? "")
                             .id(config.name ?? "")
                             .required(config.required ?? false)
-                            .checked(config.checked)
+                            .checked(checked)
                             .onclick((e) => {
                                 const checked = (e.target as HTMLInputElement).checked;
                                 if (!config.checked.subscribe) {
@@ -497,7 +502,7 @@ export class FJSC {
     }
 
     static toggle(config: BooleanConfig) {
-        const errors = signal<string[]>([]);
+        const errors = signal<Iterable<string>>([]);
         const hasError = computedSignal<boolean>(errors, (e: string[]) => e.length > 0);
         const invalidClass = computedSignal<string>(hasError, (has: boolean) => has ? "invalid" : "valid");
 
@@ -514,11 +519,15 @@ export class FJSC {
             }
         }
 
+        let checked: StringOrSignal;
         if (config.checked.subscribe) {
-            config.checked.subscribe(validate);
-            validate(config.checked.value);
+            const sig = config.checked as Signal<boolean>;
+            sig.subscribe(validate);
+            validate(sig.value);
+            checked = compute(c => c.toString(), sig);
         } else {
             validate(config.checked as boolean);
+            checked = config.checked.toString();
         }
 
         return create("div")
@@ -535,7 +544,7 @@ export class FJSC {
                             .classes("hidden", "fjsc-slider")
                             .id(config.name ?? "")
                             .required(config.required ?? false)
-                            .checked(config.checked)
+                            .checked(checked)
                             .onclick((e) => {
                                 const checked = (e.target as HTMLInputElement).checked;
                                 if (!config.checked.subscribe) {
