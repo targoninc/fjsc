@@ -90,7 +90,7 @@ function example() {
                         onchange: (value) => {
                             console.log("checkbox changed to " + value);
                         },
-                        checked: false,
+                        checks: false,
                         required: true,
                         text: "Checkbox"
                     }),
@@ -99,7 +99,7 @@ function example() {
                             console.log("toggle changed to " + value);
                         },
                         required: true,
-                        checked: false,
+                        checks: false,
                         text: "Toggle"
                     }),
                 ]
