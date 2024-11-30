@@ -301,11 +301,6 @@ h6.fjsc {
     position: absolute;
     left: 2px;
     font-size: 14px;
-    display: none;
-}
-
-.fjsc-checkbox-container input:checked ~ .fjsc-checkmark .fjsc-checkmark-icon {
-    display: initial;
 }
 
 .fjsc-toggle-container {

@@ -29,12 +29,8 @@ import {compute, Signal, signal} from "./signals.ts";
 function getDisabledCss(config: { disabled?: TypeOrSignal<boolean> }): CssClass {
     let pointerEvents: StringOrSignal, opacity: StringOrSignal;
     if (config.disabled?.subscribe) {
-        pointerEvents = signal("initial");
-        opacity = signal("1");
-        config.disabled.subscribe((newVal: boolean) => {
-            pointerEvents!.value = newVal ? "none" : "initial";
-            opacity!.value = newVal ? ".5" : "1";
-        })
+        pointerEvents = compute((d): string => d ? "none" : "initial", config.disabled as Signal<boolean>);
+        opacity = compute((d): string => d ? ".5" : "1", config.disabled as Signal<boolean>);
     } else {
         pointerEvents = config.disabled ? "none" : "initial";
         opacity = config.disabled ? ".5" : "1";
@@ -481,21 +477,21 @@ export class FJSC {
                             .required(config.required ?? false)
                             .checked(checked)
                             .onclick((e) => {
-                                const checked = (e.target as HTMLInputElement).checked;
+                                const c = (e.target as HTMLInputElement).checked;
                                 if (!config.checked.subscribe) {
-                                    validate(checked);
+                                    validate(c);
                                 }
 
-                                config.onchange && config.onchange(checked);
+                                config.onchange && config.onchange(c);
                             })
                             .build(),
                         create("span")
                             .classes("fjsc-checkmark")
                             .children(
-                                create("span")
+                                ifjs(config.checked, create("span")
                                     .classes("fjsc-checkmark-icon")
                                     .text("✓")
-                                    .build()
+                                    .build())
                             ).build(),
                     ).build(),
                 ifjs(hasError, FJSC.errorList(errors))

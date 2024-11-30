@@ -5,7 +5,6 @@ import {fjscVars} from "./fjscVariables.ts";
 export const baseCss: CssClass = {
     fontFamily: `${fjscVars.font}, sans-serif`,
     fontSize: fjscVars.baseFontSize,
-    border: "none",
     background: "none",
     color: fjscVars.textColor
 }
@@ -29,7 +28,6 @@ export const flexVerticalCss: CssClass = mergeCss(baseCss, flexCss, gapCss, {
 export const interactiveCss: CssClass = mergeCss(baseCss, {
     padding: `${fjscVars.inputPaddingY} ${fjscVars.inputPaddingX}`,
     borderRadius: fjscVars.borderRadiusSmall,
-    border: `1px solid ${fjscVars.interactiveBorder}`,
     background: fjscVars.interactiveBackground,
     color: fjscVars.interactiveColor,
 });
