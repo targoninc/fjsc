@@ -119,6 +119,14 @@ label.fjsc {
     font-size: 0.8em;
 }
 
+.fjsc {
+    font-family: var(--fjsc-font), sans-serif;
+    font-size: var(--fjsc-base-font-size);
+    border: none;
+    background: none;
+    color: var(--fjsc-text-color);
+}
+
 .fjsc-area {
     background: var(--fjsc-area-background);
     padding: var(--fjsc-area-padding-y) var(--fjsc-area-padding-x);
@@ -301,6 +309,11 @@ h6.fjsc {
     position: absolute;
     left: 2px;
     font-size: 14px;
+    display: none;
+}
+
+.fjsc-checkbox-container input:checked ~ .fjsc-checkmark .fjsc-checkmark-icon {
+    display: initial;
 }
 
 .fjsc-toggle-container {
@@ -342,10 +355,25 @@ input.invalid, textarea.invalid, button.invalid {
     border-color: var(--fjsc-error-color);
 }
 
+.fjsc-error {
+    color: var(--fjsc-error-color);
+    font-size: 0.9em;
+}
+
+.disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.disabled * {
+    pointer-events: none;
+}
+
 .fjsc-eye-button {
     position: absolute;
-    right: 0;
+    right: var(--fjsc-input-padding-x);
     bottom: 0;
     cursor: pointer;
-    padding: var(--fjsc-input-padding-y) var(--fjsc-input-padding-x);
+    display: flex;
+    transform: translateY(-50%);
 }

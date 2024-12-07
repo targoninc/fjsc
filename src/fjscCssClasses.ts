@@ -1,7 +1,7 @@
 import {mergeCss} from "./f2.ts";
 import type {CssClass} from "./f2.ts";
 import {fjscVars} from "./fjscVariables.ts";
-
+/*
 export const baseCss: CssClass = {
     fontFamily: `${fjscVars.font}, sans-serif`,
     fontSize: fjscVars.baseFontSize,
@@ -38,3 +38,4 @@ export const containerCss: CssClass = mergeCss(baseCss, {
     borderRadius: fjscVars.borderRadiusMedium,
     border: `1px solid ${fjscVars.containerBorder}`,
 });
+*/
