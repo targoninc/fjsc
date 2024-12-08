@@ -54,7 +54,9 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: Function, renderSequentially = false): any {
+type SignalMapCallback<T> = (item: T, index: number) => AnyElement;
+
+export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: SignalMapCallback<T>, renderSequentially = false): any {
     if (!arrayState.subscribe) {
         throw new Error("arrayState argument for signalMap is not subscribable");
     }
