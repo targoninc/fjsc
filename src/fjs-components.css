@@ -155,7 +155,6 @@ label.fjsc {
 
 button.fjsc {
     height: max-content !important;
-    border-bottom: 3px solid var(--fjsc-interactive-border);
 }
 
 button.fjsc:hover {
