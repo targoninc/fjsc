@@ -147,14 +147,11 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     border: 1px solid var(--fjsc-interactive-border);
     background: var(--fjsc-interactive-background);
     color: var(--fjsc-interactive-color);
+    height: max-content;
 }
 
 label.fjsc {
     position: relative;
-}
-
-button.fjsc {
-    height: max-content !important;
 }
 
 button.fjsc:hover {
