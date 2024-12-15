@@ -159,6 +159,7 @@ button.fjsc {
 
 button.fjsc:hover {
     cursor: pointer;
+    border: 1px solid var(--fjsc-interactive-border-active);
 }
 
 button.fjsc:hover, input.fjsc:hover, select.fjsc:hover, textarea.fjsc:hover {
