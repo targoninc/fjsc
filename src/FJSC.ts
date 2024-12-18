@@ -35,6 +35,7 @@ export class FJSC {
         return create("button")
             .applyGenericConfig(config)
             .onclick(config.onclick)
+            .attributes("tabindex", config.tabindex ?? "0")
             .children(
                 ifjs(config.icon, () => FJSC.icon(config.icon!)),
                 ifjs(config.text, () => FJSC.text(<TextConfig>{
