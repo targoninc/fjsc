@@ -490,15 +490,12 @@ export class FJSC {
             }
         }
 
-        let checked: StringOrSignal;
         if (config.checked.subscribe) {
             const sig = config.checked as Signal<boolean>;
             sig.subscribe(validate);
             validate(sig.value);
-            checked = compute(c => c.toString(), sig);
         } else {
             validate(config.checked as boolean);
-            checked = config.checked.toString();
         }
 
         return create("div")
@@ -514,7 +511,6 @@ export class FJSC {
                             .classes("hidden", "fjsc-slider")
                             .id(config.name ?? "")
                             .required(config.required ?? false)
-                            .checked(checked)
                             .onclick((e) => {
                                 const checked = (e.target as HTMLInputElement).checked;
                                 if (!config.checked.subscribe) {
