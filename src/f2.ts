@@ -215,13 +215,7 @@ export class DomNode {
             } else if (node instanceof DomNode) {
                 this._node.appendChild(node.build());
             } else if (node && node.constructor === Signal) {
-                let childNode = node.value;
-                if (!isValidElement(childNode)) {
-                    // Create a placeholder div if the value is not an HTMLElement so we can swap it out later
-                    childNode = nullElement();
-                }
-                this._node.appendChild(childNode);
-                node.onUpdate = (newValue: AnyNode) => {
+                node.subscribe((newValue: AnyNode) => {
                     if (isValidElement(newValue)) {
                         this._node.replaceChild(newValue as AnyElement, childNode);
                         childNode = newValue;
@@ -231,7 +225,13 @@ export class DomNode {
                     } else {
                         stack('Unexpected value for child. Must be an HTMLElement or a subclass.', newValue);
                     }
-                };
+                });
+                let childNode = node.value;
+                if (!isValidElement(childNode)) {
+                    // Create a placeholder div if the value is not an HTMLElement so we can swap it out later
+                    childNode = nullElement();
+                }
+                this._node.appendChild(childNode);
             } else if (node && node.constructor === Array) {
                 for (let childNode of node) {
                     this.children(childNode);
