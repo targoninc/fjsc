@@ -282,6 +282,7 @@ export class FJSC {
                 .applyGenericConfig(config)
                 .classes(iconClass, "material-symbols-outlined", pointerClass)
                 .text(icon)
+                .onclick(config.onclick)
                 .build();
         }
 
@@ -289,6 +290,7 @@ export class FJSC {
             .applyGenericConfig(config)
             .classes(iconClass, pointerClass)
             .attributes("src", icon)
+            .onclick(config.onclick)
             .build();
     }
 

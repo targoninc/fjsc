@@ -95,6 +95,7 @@ export interface IconConfig extends BaseComponentConfig  {
     icon: StringOrSignal;
     adaptive?: boolean;
     isUrl?: boolean;
+    onclick?: Function;
 }
 
 export interface SelectOption extends BaseComponentConfig  {
