@@ -514,6 +514,7 @@ export class FJSC {
                             .classes("hidden", "fjsc-slider")
                             .id(config.name ?? "")
                             .required(config.required ?? false)
+                            .checked(config.checked)
                             .onclick((e) => {
                                 const checked = (e.target as HTMLInputElement).checked;
                                 if (!config.checked.subscribe) {
