@@ -373,4 +373,5 @@ input.invalid, textarea.invalid, button.invalid {
     cursor: pointer;
     display: flex;
     transform: translateY(-50%);
+    font-size: 1.2em;
 }
