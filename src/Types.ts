@@ -46,7 +46,7 @@ export interface BaseComponentConfig {
 }
 
 export interface ButtonConfig extends BaseComponentConfig {
-    text: StringOrSignal;
+    text?: StringOrSignal;
     onclick: EventHandler<MouseEvent>;
     icon?: IconConfig;
     disabled?: TypeOrSignal<boolean>;
