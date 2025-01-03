@@ -1,4 +1,4 @@
-import {FJSC} from "../FJSC.js";
+import {FJSC} from "../FJSC.code";
 import {computedSignal, signal} from "../src/f2.ts";
 import {InputType} from "../src/Types.ts";
 

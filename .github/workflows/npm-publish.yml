@@ -1,4 +1,4 @@
-name: Node.js Package
+name: Node.code Package
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Use Node.js
+      - name: Use Node.code
         uses: actions/setup-node@v4
         with:
           node-version: '22.x'
