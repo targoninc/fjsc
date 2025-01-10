@@ -99,8 +99,8 @@ export interface IconConfig extends BaseComponentConfig  {
 }
 
 export interface SelectOption extends BaseComponentConfig  {
-    image: string;
-    imageIsUrl: boolean;
+    image?: string;
+    imageIsUrl?: boolean;
     name: any;
     id: any;
 }

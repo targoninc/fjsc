@@ -321,6 +321,10 @@ export class FJSC {
             .applyGenericConfig(config)
             .classes("fjsc-search-select", "flex-v", "relative")
             .children(
+                ifjs(config.label, create("label")
+                    .classes("fjsc")
+                    .text(config.label)
+                    .build()),
                 create("div")
                     .classes("flex", "fjsc-search-select-visible", "fjsc")
                     .children(
@@ -399,7 +403,7 @@ export class FJSC {
             })
             .children(
                 ifjs(config.option.image, FJSC.icon({
-                    icon: config.option.image,
+                    icon: config.option.image ?? "",
                     isUrl: config.option.imageIsUrl,
                     adaptive: true
                 })),
