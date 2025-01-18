@@ -95,6 +95,13 @@ export function isValidElement(element: any) {
     return validTypes.some(type => element instanceof type);
 }
 
+export function getValue<T>(maybeSignal: Signal<T>|T): T {
+    if (maybeSignal instanceof Signal) {
+        return (maybeSignal as Signal<T>).value;
+    }
+    return maybeSignal as T;
+}
+
 type AnyElementWithKeyIndex = AnyElement & {
     [key: string]: HtmlPropertyValue
 };
