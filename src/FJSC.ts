@@ -300,6 +300,9 @@ export class FJSC {
         const value = config.value ?? signal(null);
 
         const search = signal(options.value.find(o => o.id === value.value)?.name ?? "");
+        value.subscribe((newVal) => {
+            search.value = options.value.find(o => o.id === newVal)?.name ?? "";
+        });
         const optionsVisible = signal(false);
         const filtered = signal(options.value);
         const selectedIndex = signal(0);
