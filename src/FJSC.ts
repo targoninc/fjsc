@@ -51,6 +51,7 @@ export class FJSC {
         const invalidClass = compute((has: boolean): string => has ? "invalid" : "valid", hasError);
         const touched = signal(false);
         const isPassword = config.type === InputType.password;
+        const passwordClass: string = isPassword ? "fjsc-password-input" : "_";
         const toggleState = signal(false);
         const configTypeSignal = config.type.constructor === Signal ? config.type as Signal<InputType> : signal(config.type as InputType);
         const actualType = compute((t: boolean) => t ? InputType.text : configTypeSignal.value, toggleState);
@@ -101,7 +102,7 @@ export class FJSC {
                     .for(config.title)
                     .children(
                         create("input")
-                            .classes(invalidClass)
+                            .classes(invalidClass, passwordClass)
                             .applyGenericConfig(config)
                             .type(actualType)
                             .value(value)

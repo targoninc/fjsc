@@ -150,6 +150,10 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     height: max-content;
 }
 
+.fjsc-password-input {
+    padding-left: calc(2em) !important;
+}
+
 label.fjsc {
     position: relative;
 }
@@ -368,10 +372,10 @@ input.invalid, textarea.invalid, button.invalid {
 
 .fjsc-eye-button {
     position: absolute;
-    right: var(--fjsc-input-padding-x);
-    bottom: 0;
+    left: var(--fjsc-input-padding-x);
+    top: 50%;
     cursor: pointer;
     display: flex;
-    transform: translateY(-50%);
+    transform: translateY(10%);
     font-size: 1.2em;
 }
