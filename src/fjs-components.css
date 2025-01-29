@@ -194,7 +194,7 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
     border: 1px solid var(--fjsc-interactive-border);
     border-radius: 0 0 var(--fjsc-border-radius-small) var(--fjsc-border-radius-small);
     z-index: 9999;
-    gap: 0;
+    gap: 0 !important;
     flex-wrap: nowrap;
 }
 
