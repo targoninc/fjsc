@@ -307,7 +307,9 @@ export class FJSC {
         const filtered = signal(options.value);
         const selectedIndex = signal(0);
         const filter = () => {
-            filtered.value = options.value.filter(o => o.name.toLowerCase().includes(search.value.toLowerCase()));
+            //filtered.value = options.value.filter(o => o.name.toLowerCase().includes(search.value.toLowerCase()));
+            selectedIndex.value = options.value.findIndex(o => o.name.toLowerCase().includes(search.value.toLowerCase()));
+            console.log(selectedIndex.value);
         }
         options.subscribe(filter);
         search.subscribe(filter);
@@ -366,7 +368,6 @@ export class FJSC {
                                         if ((e.keyCode > 32 && e.keyCode < 126) || e.key === "Backspace") {
                                             setTimeout(() => {
                                                 search.value = e.target.value;
-                                                selectedIndex.value = 0;
                                             });
                                         }
                                         break;
