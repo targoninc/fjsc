@@ -184,7 +184,7 @@ export class FJSC {
         }
 
         return create("div")
-            .classes("flex-v", "fjsc")
+            .classes("flex-v", "fjsc", ...config.classes)
             .children(
                 create("label")
                     .classes("flex-v", "fjsc", getDisabledClass(config))
