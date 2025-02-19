@@ -309,7 +309,6 @@ export class FJSC {
         const filter = () => {
             //filtered.value = options.value.filter(o => o.name.toLowerCase().includes(search.value.toLowerCase()));
             selectedIndex.value = options.value.findIndex(o => o.name.toLowerCase().includes(search.value.toLowerCase()));
-            console.log(selectedIndex.value);
         }
         options.subscribe(filter);
         search.subscribe(filter);
