@@ -78,6 +78,7 @@
 
 .material-symbols-outlined {
     font-size: var(--fjsc-base-font-size) !important;
+    font-family: 'Material Symbols Outlined' !important;
 }
 
 .adaptive-icon {
