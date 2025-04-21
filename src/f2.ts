@@ -54,7 +54,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-type SignalMapCallback<T> = (item: T, index: number) => AnyElement;
+export type SignalMapCallback<T> = (item: T, index: number) => AnyElement;
 
 export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: SignalMapCallback<T>, renderSequentially = false): any {
     if (!arrayState.subscribe) {
