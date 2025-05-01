@@ -78,6 +78,7 @@
 
 .material-symbols-outlined {
     font-size: var(--fjsc-base-font-size) !important;
+    font-family: 'Material Symbols Outlined' !important;
 }
 
 .adaptive-icon {
@@ -119,6 +120,14 @@ label.fjsc {
     font-size: 0.8em;
 }
 
+.fjsc {
+    font-family: var(--fjsc-font), sans-serif;
+    font-size: var(--fjsc-base-font-size);
+    border: none;
+    background: none;
+    color: var(--fjsc-text-color);
+}
+
 .fjsc-area {
     background: var(--fjsc-area-background);
     padding: var(--fjsc-area-padding-y) var(--fjsc-area-padding-x);
@@ -139,19 +148,20 @@ button.fjsc, input.fjsc, select.fjsc, textarea.fjsc {
     border: 1px solid var(--fjsc-interactive-border);
     background: var(--fjsc-interactive-background);
     color: var(--fjsc-interactive-color);
+    height: max-content;
+}
+
+.fjsc-password-input {
+    padding-left: calc(2em) !important;
 }
 
 label.fjsc {
     position: relative;
 }
 
-button.fjsc {
-    height: max-content !important;
-    border-bottom: 3px solid var(--fjsc-interactive-border);
-}
-
 button.fjsc:hover {
     cursor: pointer;
+    border: 1px solid var(--fjsc-interactive-border-active);
 }
 
 button.fjsc:hover, input.fjsc:hover, select.fjsc:hover, textarea.fjsc:hover {
@@ -185,7 +195,7 @@ button.fjsc:focus-visible, input.fjsc:focus-visible, select.fjsc:focus-visible, 
     border: 1px solid var(--fjsc-interactive-border);
     border-radius: 0 0 var(--fjsc-border-radius-small) var(--fjsc-border-radius-small);
     z-index: 9999;
-    gap: 0;
+    gap: 0 !important;
     flex-wrap: nowrap;
 }
 
@@ -301,6 +311,11 @@ h6.fjsc {
     position: absolute;
     left: 2px;
     font-size: 14px;
+    display: none;
+}
+
+.fjsc-checkbox-container input:checked ~ .fjsc-checkmark .fjsc-checkmark-icon {
+    display: initial;
 }
 
 .fjsc-toggle-container {
@@ -342,10 +357,26 @@ input.invalid, textarea.invalid, button.invalid {
     border-color: var(--fjsc-error-color);
 }
 
+.fjsc-error {
+    color: var(--fjsc-error-color);
+    font-size: 0.9em;
+}
+
+.disabled {
+    opacity: .5;
+    pointer-events: none;
+}
+
+.disabled * {
+    pointer-events: none;
+}
+
 .fjsc-eye-button {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    left: var(--fjsc-input-padding-x);
+    top: 50%;
     cursor: pointer;
-    padding: var(--fjsc-input-padding-y) var(--fjsc-input-padding-x);
+    display: flex;
+    transform: translateY(10%);
+    font-size: 1.2em;
 }

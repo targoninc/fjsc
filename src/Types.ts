@@ -46,7 +46,7 @@ export interface BaseComponentConfig {
 }
 
 export interface ButtonConfig extends BaseComponentConfig {
-    text: StringOrSignal;
+    text?: StringOrSignal;
     onclick: EventHandler<MouseEvent>;
     icon?: IconConfig;
     disabled?: TypeOrSignal<boolean>;
@@ -95,11 +95,12 @@ export interface IconConfig extends BaseComponentConfig  {
     icon: StringOrSignal;
     adaptive?: boolean;
     isUrl?: boolean;
+    onclick?: Function;
 }
 
 export interface SelectOption extends BaseComponentConfig  {
-    image: string;
-    imageIsUrl: boolean;
+    image?: string;
+    imageIsUrl?: boolean;
     name: any;
     id: any;
 }

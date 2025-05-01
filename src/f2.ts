@@ -54,7 +54,7 @@ export function ifjs(condition: any, element: AnyElement | AnyElementFactory, in
     }
 }
 
-type SignalMapCallback<T> = (item: T, index: number) => AnyElement;
+export type SignalMapCallback<T> = (item: T, index: number) => AnyElement;
 
 export function signalMap<T>(arrayState: Signal<T[]>, wrapper: DomNode, callback: SignalMapCallback<T>, renderSequentially = false): any {
     if (!arrayState.subscribe) {
@@ -93,6 +93,13 @@ export function stack(message: string, debugInfo = {}) {
 export function isValidElement(element: any) {
     const validTypes = [HTMLElement, SVGElement];
     return validTypes.some(type => element instanceof type);
+}
+
+export function getValue<T>(maybeSignal: Signal<T>|T): T {
+    if (maybeSignal instanceof Signal) {
+        return (maybeSignal as Signal<T>).value;
+    }
+    return maybeSignal as T;
 }
 
 type AnyElementWithKeyIndex = AnyElement & {
@@ -215,13 +222,7 @@ export class DomNode {
             } else if (node instanceof DomNode) {
                 this._node.appendChild(node.build());
             } else if (node && node.constructor === Signal) {
-                let childNode = node.value;
-                if (!isValidElement(childNode)) {
-                    // Create a placeholder div if the value is not an HTMLElement so we can swap it out later
-                    childNode = nullElement();
-                }
-                this._node.appendChild(childNode);
-                node.onUpdate = (newValue: AnyNode) => {
+                node.subscribe((newValue: AnyNode) => {
                     if (isValidElement(newValue)) {
                         this._node.replaceChild(newValue as AnyElement, childNode);
                         childNode = newValue;
@@ -231,7 +232,13 @@ export class DomNode {
                     } else {
                         stack('Unexpected value for child. Must be an HTMLElement or a subclass.', newValue);
                     }
-                };
+                });
+                let childNode = node.value;
+                if (!isValidElement(childNode)) {
+                    // Create a placeholder div if the value is not an HTMLElement so we can swap it out later
+                    childNode = nullElement();
+                }
+                this._node.appendChild(childNode);
             } else if (node && node.constructor === Array) {
                 for (let childNode of node) {
                     this.children(childNode);
@@ -301,13 +308,13 @@ export class DomNode {
         return this;
     }
 
-    onkeydown(callback: EventHandler<Event>) {
+    onkeydown(callback: EventHandler<KeyboardEvent>) {
         // @ts-ignore
         this._node.onkeydown = callback;
         return this;
     }
 
-    onkeyup(callback: EventHandler<Event>) {
+    onkeyup(callback: EventHandler<KeyboardEvent>) {
         // @ts-ignore
         this._node.onkeyup = callback;
         return this;
@@ -409,224 +416,187 @@ export class DomNode {
         return this;
     }
 
-    onscroll(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onscroll(callback: EventListener) {
         this._node.onscroll = callback;
         return this;
     }
 
-    onfocus(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onfocus(callback: EventListener) {
         this._node.onfocus = callback;
         return this;
     }
 
-    onblur(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onblur(callback: EventListener) {
         this._node.onblur = callback;
         return this;
     }
 
-    onresize(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onresize(callback: EventListener) {
         this._node.onresize = callback;
         return this;
     }
 
-    onselect(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onselect(callback: EventListener) {
         this._node.onselect = callback;
         return this;
     }
 
-    onsubmit(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onsubmit(callback: EventListener) {
         this._node.onsubmit = callback;
         return this;
     }
 
-    onreset(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onreset(callback: EventListener) {
         this._node.onreset = callback;
         return this;
     }
 
-    onabort(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onabort(callback: EventListener) {
         this._node.onabort = callback;
         return this;
     }
 
-    onerror(callback: EventHandler<string|Event>) {
-        // @ts-ignore
+    onerror(callback: OnErrorEventHandler) {
         this._node.onerror = callback;
         return this;
     }
 
-    oncanplay(callback: EventHandler<Event>) {
-        // @ts-ignore
+    oncanplay(callback: EventListener) {
         this._node.oncanplay = callback;
         return this;
     }
 
-    oncanplaythrough(callback: EventHandler<Event>) {
-        // @ts-ignore
+    oncanplaythrough(callback: EventListener) {
         this._node.oncanplaythrough = callback;
         return this;
     }
 
-    ondurationchange(callback: EventHandler<Event>) {
-        // @ts-ignore
+    ondurationchange(callback: EventListener) {
         this._node.ondurationchange = callback;
         return this;
     }
 
-    onemptied(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onemptied(callback: EventListener) {
         this._node.onemptied = callback;
         return this;
     }
 
-    onended(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onended(callback: EventListener) {
         this._node.onended = callback;
         return this;
     }
 
-    onloadeddata(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onloadeddata(callback: EventListener) {
         this._node.onloadeddata = callback;
         return this;
     }
 
-    onloadedmetadata(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onloadedmetadata(callback: EventListener) {
         this._node.onloadedmetadata = callback;
         return this;
     }
 
-    onloadstart(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onloadstart(callback: EventListener) {
         this._node.onloadstart = callback;
         return this;
     }
 
-    onpause(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onpause(callback: EventListener) {
         this._node.onpause = callback;
         return this;
     }
 
-    onplay(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onplay(callback: EventListener) {
         this._node.onplay = callback;
         return this;
     }
 
-    onplaying(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onplaying(callback: EventListener) {
         this._node.onplaying = callback;
         return this;
     }
 
-    onprogress(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onprogress(callback: EventListener) {
         this._node.onprogress = callback;
         return this;
     }
 
-    onratechange(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onratechange(callback: EventListener) {
         this._node.onratechange = callback;
         return this;
     }
 
-    onseeked(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onseeked(callback: EventListener) {
         this._node.onseeked = callback;
         return this;
     }
 
-    onseeking(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onseeking(callback: EventListener) {
         this._node.onseeking = callback;
         return this;
     }
 
-    onstalled(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onstalled(callback: EventListener) {
         this._node.onstalled = callback;
         return this;
     }
 
-    onsuspend(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onsuspend(callback: EventListener) {
         this._node.onsuspend = callback;
         return this;
     }
 
-    ontimeupdate(callback: EventHandler<Event>) {
-        // @ts-ignore
+    ontimeupdate(callback: EventListener) {
         this._node.ontimeupdate = callback;
         return this;
     }
 
-    onvolumechange(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onvolumechange(callback: EventListener) {
         this._node.onvolumechange = callback;
         return this;
     }
 
-    onwaiting(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onwaiting(callback: EventListener) {
         this._node.onwaiting = callback;
         return this;
     }
 
-    oncopy(callback: EventHandler<Event>) {
-        // @ts-ignore
+    oncopy(callback: EventListener) {
         this._node.oncopy = callback;
         return this;
     }
 
-    oncut(callback: EventHandler<Event>) {
-        // @ts-ignore
+    oncut(callback: EventListener) {
         this._node.oncut = callback;
         return this;
     }
 
-    onpaste(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onpaste(callback: EventListener) {
         this._node.onpaste = callback;
         return this;
     }
 
-    onanimationstart(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onanimationstart(callback: EventListener) {
         this._node.onanimationstart = callback;
         return this;
     }
 
-    onanimationend(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onanimationend(callback: EventListener) {
         this._node.onanimationend = callback;
         return this;
     }
 
-    onanimationiteration(callback: EventHandler<Event>) {
-        // @ts-ignore
+    onanimationiteration(callback: EventListener) {
         this._node.onanimationiteration = callback;
         return this;
     }
 
-    ontransitionend(callback: EventHandler<Event>) {
-        // @ts-ignore
+    ontransitionend(callback: EventListener) {
         this._node.ontransitionend = callback;
         return this;
     }
 
-    on(eventName: string, callback: EventHandler<Event>) {
-        // @ts-ignore
+    on(eventName: string, callback: EventListenerOrEventListenerObject) {
         this._node.addEventListener(eventName, callback);
         return this;
     }

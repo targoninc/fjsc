@@ -110,18 +110,18 @@ web_modules/
 
 .parcel-cache
 
-# Next.js build output
+# Next.code build output
 
 .next
 out
 
-# Nuxt.js build / generate output
+# Nuxt.code build / generate output
 
 .nuxt
 
 # Gatsby files
 
-# Comment in the public line in if your project uses Gatsby and not Next.js
+# Comment in the public line in if your project uses Gatsby and not Next.code
 
 # https://nextjs.org/blog/next-9-1#public-directory-support
 
