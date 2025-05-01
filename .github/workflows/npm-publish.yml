@@ -1,6 +1,7 @@
 name: Node.code Package
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
